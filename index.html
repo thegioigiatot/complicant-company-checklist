@@ -1,0 +1,2842 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Compliance Checklist Dashboard</title>
+    <meta name="description" content="Ứng dụng tra cứu và quản trị tuân thủ doanh nghiệp toàn diện với 84 mục checklist chuẩn, 14 thay đổi pháp lý 2025-2026 và lịch tuân thủ trong năm." />
+    <meta property="og:title" content="Compliance Checklist Dashboard" />
+    <meta property="og:description" content="Ứng dụng tra cứu và quản trị tuân thủ doanh nghiệp toàn diện với 84 mục checklist chuẩn, 14 thay đổi pháp lý 2025-2026 và lịch tuân thủ trong năm." />
+    <meta property="og:type" content="website" />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                50: '#f0f7ff',
+                100: '#e0effe',
+                500: '#0284c7',
+                600: '#0369a1',
+                700: '#075985',
+                900: '#0c4a6e',
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <!-- Vue 3 Prod CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+    <style>
+      [v-cloak] { display: none !important; }
+      @media print {
+        .no-print { display: none !important; }
+        .print-only { display: block !important; }
+        body { background: white !important; color: black !important; font-size: 12pt; }
+        .card-print { break-inside: avoid; border: 1px solid #cbd5e1 !important; box-shadow: none !important; margin-bottom: 12px !important; }
+      }
+      .print-only { display: none; }
+      /* Custom subtle scrollbar */
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: #f1f5f9; }
+      ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 antialiased font-sans min-h-screen selection:bg-brand-500 selection:text-white">
+    <div id="app" v-cloak class="min-h-screen flex flex-col">
+      <!-- HEADER & TOP NAVIGATION BAR -->
+      <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex items-center justify-between h-16 sm:h-20">
+            <!-- Brand Logo & Title -->
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-brand-700 flex items-center justify-center text-white shadow-sm ring-2 ring-slate-100">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h1 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight leading-tight">
+                    Quản Trị Tuân Thủ Doanh Nghiệp
+                  </h1>
+                  <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-brand-50 text-brand-700 border border-brand-200">
+                    2025 - 2026
+                  </span>
+                </div>
+                <p class="text-xs text-slate-500 hidden sm:block">
+                  Hệ thống 84 mục chuẩn rà soát rủi ro pháp lý, thuế, lao động & an toàn nội bộ
+                </p>
+              </div>
+            </div>
+
+            <!-- Action Tools -->
+            <div class="flex items-center gap-2">
+              <button 
+                @click="printReport" 
+                title="In hoặc Xuất báo cáo PDF"
+                class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-lg transition-colors cursor-pointer"
+              >
+                <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                </svg>
+                <span class="hidden md:inline">In / Xuất PDF</span>
+              </button>
+
+              <button 
+                @click="exportJson" 
+                title="Lưu file sao lưu tiến độ"
+                class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-lg transition-colors cursor-pointer"
+              >
+                <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                <span class="hidden md:inline">Xuất JSON</span>
+              </button>
+
+              <label 
+                title="Nạp dữ liệu từ file JSON"
+                class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-lg transition-colors cursor-pointer"
+              >
+                <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                </svg>
+                <span class="hidden md:inline">Nhập JSON</span>
+                <input type="file" accept=".json" @change="importJson" class="hidden" />
+              </label>
+
+              <button 
+                @click="confirmReset" 
+                title="Khôi phục trạng thái ban đầu"
+                class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- MAIN NAVIGATION TABS -->
+          <div class="flex space-x-1 border-t border-slate-100 overflow-x-auto no-scrollbar py-2">
+            <button 
+              @click="activeTab = 'checklist'"
+              :class="activeTab === 'checklist' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 font-medium'"
+              class="px-3.5 py-2 rounded-lg text-xs sm:text-sm whitespace-nowrap flex items-center gap-2 transition-all cursor-pointer"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+              </svg>
+              <span>84 Mục Checklist Tuân Thủ</span>
+              <span class="px-1.5 py-0.5 rounded text-[10px] font-bold" :class="activeTab === 'checklist' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'">
+                {{ stats.completedCount }}/{{ items.length }}
+              </span>
+            </button>
+
+            <button 
+              @click="activeTab = 'legalUpdates'"
+              :class="activeTab === 'legalUpdates' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 font-medium'"
+              class="px-3.5 py-2 rounded-lg text-xs sm:text-sm whitespace-nowrap flex items-center gap-2 transition-all cursor-pointer"
+            >
+              <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              <span>Điểm Mới 2025 - 2026</span>
+              <span class="px-1.5 py-0.5 rounded text-[10px] font-bold" :class="activeTab === 'legalUpdates' ? 'bg-amber-400 text-slate-900' : 'bg-amber-100 text-amber-800'">
+                14 Điểm
+              </span>
+            </button>
+
+            <button 
+              @click="activeTab = 'calendar'"
+              :class="activeTab === 'calendar' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 font-medium'"
+              class="px-3.5 py-2 rounded-lg text-xs sm:text-sm whitespace-nowrap flex items-center gap-2 transition-all cursor-pointer"
+            >
+              <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span>Lịch Tuân Thủ Trong Năm</span>
+              <span class="px-1.5 py-0.5 rounded text-[10px] font-bold" :class="activeTab === 'calendar' ? 'bg-white/20 text-white' : 'bg-blue-100 text-blue-800'">
+                Deadline
+              </span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- PRINT-ONLY HEADER -->
+      <div class="print-only p-6 border-b border-slate-300 mb-6 text-center">
+        <h1 class="text-2xl font-bold text-slate-900 uppercase tracking-wide">Báo Cáo Quản Trị & Rà Soát Tuân Thủ Doanh Nghiệp</h1>
+        <p class="text-sm text-slate-600 mt-1">Hệ thống chuẩn hoá 84 tiêu chí tuân thủ pháp luật Việt Nam (Áp dụng 2025 - 2026)</p>
+        <div class="mt-4 flex justify-between text-xs text-slate-500 border-t pt-2">
+          <span>Ngày in báo cáo: {{ currentDateFormatted }}</span>
+          <span>Tiến độ hoàn thành: {{ stats.completedCount }}/84 mục ({{ stats.percentage }}%)</span>
+          <span>Mục rủi ro cao chưa đạt: {{ stats.highRiskIncomplete }} mục</span>
+        </div>
+      </div>
+
+      <!-- MAIN BODY CONTAINER -->
+      <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- ==================================================== -->
+        <!-- TAB 1: 84 MỤC CHECKLIST TUÂN THỦ -->
+        <!-- ==================================================== -->
+        <div v-show="activeTab === 'checklist'" class="space-y-6">
+
+          <!-- 1. DASHBOARD THỐNG KÊ NHANH (TOP BAR) -->
+          <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
+              
+              <!-- Cột 1: Tiến độ tổng quan -->
+              <div class="md:col-span-4 lg:col-span-5 border-b md:border-b-0 md:border-r border-slate-100 pb-4 md:pb-0 md:pr-5">
+                <div class="flex items-center justify-between mb-2">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Tiến Độ Rà Soát</span>
+                    <span class="px-2 py-0.5 rounded-full text-xs font-bold" :class="stats.percentage === 100 ? 'bg-emerald-100 text-emerald-800' : 'bg-brand-50 text-brand-700'">
+                      {{ stats.percentage }}% Hoàn Thành
+                    </span>
+                  </div>
+                  <span class="text-xs font-semibold text-slate-600">
+                    <strong class="text-slate-900 text-sm font-extrabold">{{ stats.completedCount }}</strong> / {{ items.length }} mục
+                  </span>
+                </div>
+                <!-- Progress bar -->
+                <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden flex">
+                  <div 
+                    class="bg-emerald-500 h-full transition-all duration-500" 
+                    :style="{ width: (stats.completedCount / items.length * 100) + '%' }"
+                    title="Đã đạt"
+                  ></div>
+                  <div 
+                    class="bg-blue-400 h-full transition-all duration-500" 
+                    :style="{ width: (stats.inProgressCount / items.length * 100) + '%' }"
+                    title="Đang làm"
+                  ></div>
+                </div>
+                <!-- Mini status legends -->
+                <div class="flex items-center justify-between text-[11px] text-slate-500 mt-2 font-medium">
+                  <span class="flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    Đã đạt: <b class="text-slate-800">{{ stats.completedCount }}</b>
+                  </span>
+                  <span class="flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-400 inline-block"></span>
+                    Đang làm: <b class="text-slate-800">{{ stats.inProgressCount }}</b>
+                  </span>
+                  <span class="flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-slate-300 inline-block"></span>
+                    Chưa làm: <b class="text-slate-800">{{ stats.pendingCount }}</b>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Cột 2: Phân tích 3 mức độ rủi ro -->
+              <div class="md:col-span-8 lg:col-span-7">
+                <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2.5 flex items-center justify-between">
+                  <span>Trạng Thái Theo Mức Rủi Ro</span>
+                  <span class="text-[11px] text-slate-400 font-normal">Nhấp badge để lọc nhanh</span>
+                </div>
+                <div class="grid grid-cols-3 gap-3">
+                  
+                  <!-- Card Rủi ro Cao -->
+                  <button 
+                    @click="setRiskFilter('Cao')"
+                    :class="filterRisk === 'Cao' ? 'ring-2 ring-red-500 bg-red-50/80' : 'bg-red-50/40 hover:bg-red-50 border border-red-100'"
+                    class="p-2.5 sm:p-3 rounded-xl text-left transition-all cursor-pointer group"
+                  >
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-red-700 flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
+                        Rủi ro Cao
+                      </span>
+                      <span class="text-xs font-extrabold text-red-700">
+                        {{ stats.highRiskCompleted }}/{{ stats.highRiskTotal }}
+                      </span>
+                    </div>
+                    <div class="w-full bg-red-200/60 h-1.5 rounded-full mt-2 overflow-hidden">
+                      <div class="bg-red-600 h-full rounded-full transition-all" :style="{ width: stats.highRiskTotal ? (stats.highRiskCompleted / stats.highRiskTotal * 100) + '%' : '0%' }"></div>
+                    </div>
+                    <p class="text-[10px] text-red-600/80 mt-1.5">
+                      Còn {{ stats.highRiskTotal - stats.highRiskCompleted }} mục cần xử lý
+                    </p>
+                  </button>
+
+                  <!-- Card Rủi ro Trung bình -->
+                  <button 
+                    @click="setRiskFilter('Trung bình')"
+                    :class="filterRisk === 'Trung bình' ? 'ring-2 ring-amber-500 bg-amber-50/80' : 'bg-amber-50/40 hover:bg-amber-50 border border-amber-100'"
+                    class="p-2.5 sm:p-3 rounded-xl text-left transition-all cursor-pointer group"
+                  >
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-amber-800 flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                        Trung Bình
+                      </span>
+                      <span class="text-xs font-extrabold text-amber-800">
+                        {{ stats.medRiskCompleted }}/{{ stats.medRiskTotal }}
+                      </span>
+                    </div>
+                    <div class="w-full bg-amber-200/60 h-1.5 rounded-full mt-2 overflow-hidden">
+                      <div class="bg-amber-500 h-full rounded-full transition-all" :style="{ width: stats.medRiskTotal ? (stats.medRiskCompleted / stats.medRiskTotal * 100) + '%' : '0%' }"></div>
+                    </div>
+                    <p class="text-[10px] text-amber-700/80 mt-1.5">
+                      Đạt {{ stats.medRiskTotal ? Math.round(stats.medRiskCompleted / stats.medRiskTotal * 100) : 0 }}%
+                    </p>
+                  </button>
+
+                  <!-- Card Rủi ro Thấp -->
+                  <button 
+                    @click="setRiskFilter('Thấp')"
+                    :class="filterRisk === 'Thấp' ? 'ring-2 ring-emerald-500 bg-emerald-50/80' : 'bg-emerald-50/40 hover:bg-emerald-50 border border-emerald-100'"
+                    class="p-2.5 sm:p-3 rounded-xl text-left transition-all cursor-pointer group"
+                  >
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-emerald-800 flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        Rủi ro Thấp
+                      </span>
+                      <span class="text-xs font-extrabold text-emerald-800">
+                        {{ stats.lowRiskCompleted }}/{{ stats.lowRiskTotal }}
+                      </span>
+                    </div>
+                    <div class="w-full bg-emerald-200/60 h-1.5 rounded-full mt-2 overflow-hidden">
+                      <div class="bg-emerald-500 h-full rounded-full transition-all" :style="{ width: stats.lowRiskTotal ? (stats.lowRiskCompleted / stats.lowRiskTotal * 100) + '%' : '0%' }"></div>
+                    </div>
+                    <p class="text-[10px] text-emerald-700/80 mt-1.5">
+                      Đạt {{ stats.lowRiskTotal ? Math.round(stats.lowRiskCompleted / stats.lowRiskTotal * 100) : 0 }}%
+                    </p>
+                  </button>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- 2. BỘ LỌC & TÌM KIẾM ĐA CHIỀU (FILTER BAR) -->
+          <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-xs space-y-3 no-print">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-center">
+              
+              <!-- Live Search Input -->
+              <div class="lg:col-span-4 relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+                <input 
+                  type="text" 
+                  v-model="searchQuery"
+                  placeholder="Tìm kiếm theo hạng mục, hậu quả, luật tra cứu..." 
+                  class="w-full pl-9 pr-8 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all placeholder:text-slate-400 text-slate-800"
+                />
+                <button 
+                  v-if="searchQuery" 
+                  @click="searchQuery = ''"
+                  class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-slate-600"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Filter: Nhóm nghiệp vụ (9 nhóm) -->
+              <div class="lg:col-span-3">
+                <select 
+                  v-model="filterGroup" 
+                  class="w-full py-2 px-3 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 text-slate-800 font-medium transition-all"
+                >
+                  <option value="">-- Tất cả 9 nhóm nghiệp vụ --</option>
+                  <option v-for="grp in groupList" :key="grp" :value="grp">{{ grp }}</option>
+                </select>
+              </div>
+
+              <!-- Filter: Mức độ rủi ro -->
+              <div class="sm:col-span-1 lg:col-span-2">
+                <select 
+                  v-model="filterRisk" 
+                  class="w-full py-2 px-3 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 text-slate-800 font-medium transition-all"
+                >
+                  <option value="">Rủi ro: Tất cả</option>
+                  <option value="Cao">🔴 Rủi ro Cao</option>
+                  <option value="Trung bình">🟡 Rủi ro Trung bình</option>
+                  <option value="Thấp">🟢 Rủi ro Thấp</option>
+                </select>
+              </div>
+
+              <!-- Filter: Người phụ trách -->
+              <div class="sm:col-span-1 lg:col-span-2">
+                <select 
+                  v-model="filterAssignee" 
+                  class="w-full py-2 px-3 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 text-slate-800 font-medium transition-all"
+                >
+                  <option value="">Người phụ trách: Tất cả</option>
+                  <option v-for="asn in assigneeList" :key="asn" :value="asn">{{ asn }}</option>
+                </select>
+              </div>
+
+              <!-- Filter: Trạng thái -->
+              <div class="sm:col-span-2 lg:col-span-1">
+                <select 
+                  v-model="filterStatus" 
+                  class="w-full py-2 px-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 text-slate-800 font-medium transition-all"
+                >
+                  <option value="">Trạng thái</option>
+                  <option value="Chưa làm">Chưa làm</option>
+                  <option value="Đang làm">Đang làm</option>
+                  <option value="Đạt">Đạt</option>
+                </select>
+              </div>
+
+            </div>
+
+            <!-- Filter Status Bar & Quick Actions -->
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100 text-xs">
+              <div class="flex items-center gap-2">
+                <span class="text-slate-500">
+                  Hiển thị <strong class="text-slate-900 font-bold">{{ filteredItems.length }}</strong> / {{ items.length }} mục
+                </span>
+                <span v-if="hasActiveFilter" class="text-brand-600 bg-brand-50 px-2 py-0.5 rounded-full font-medium text-[11px]">
+                  (Đang lọc)
+                </span>
+                <button 
+                  v-if="hasActiveFilter" 
+                  @click="resetFilters" 
+                  class="text-xs text-red-600 hover:text-red-800 font-medium underline ml-1 cursor-pointer"
+                >
+                  Xoá bộ lọc
+                </button>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <button 
+                  @click="expandAll" 
+                  class="px-2.5 py-1 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg font-medium transition-colors cursor-pointer flex items-center gap-1"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                  Mở rộng tất cả
+                </button>
+                <span class="text-slate-300">|</span>
+                <button 
+                  @click="collapseAll" 
+                  class="px-2.5 py-1 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg font-medium transition-colors cursor-pointer flex items-center gap-1"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                  </svg>
+                  Thu gọn tất cả
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. KHU VỰC HIỂN THỊ DANH SÁCH (CARD / ACCORDION VIEW) -->
+          <div v-if="filteredItems.length === 0" class="bg-white rounded-2xl p-12 text-center border border-slate-200 shadow-xs">
+            <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 mx-auto flex items-center justify-center mb-3">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 class="text-base font-bold text-slate-800">Không tìm thấy mục nào</h3>
+            <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+              Không có tiêu chí tuân thủ nào khớp với điều kiện tìm kiếm hoặc bộ lọc hiện tại.
+            </p>
+            <button @click="resetFilters" class="mt-4 px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-semibold hover:bg-slate-800 transition cursor-pointer">
+              Xoá bộ lọc và xem tất cả
+            </button>
+          </div>
+
+          <div v-else class="space-y-3">
+            <div 
+              v-for="item in filteredItems" 
+              :key="item.id" 
+              :id="'item-' + item.id"
+              class="bg-white rounded-2xl border transition-all duration-200 card-print overflow-hidden shadow-xs"
+              :class="[
+                expandedMap[item.id] ? 'border-slate-300 ring-1 ring-slate-200' : 'border-slate-200/90 hover:border-slate-300',
+                item.status === 'Đạt' ? 'bg-white' : item.status === 'Đang làm' ? 'bg-blue-50/20' : ''
+              ]"
+            >
+              <!-- HEADER ACCORDION -->
+              <div 
+                class="p-4 sm:p-5 flex items-start sm:items-center justify-between gap-3 cursor-pointer select-none"
+                @click="toggleExpand(item.id)"
+              >
+                <!-- Bên trái: Trạng thái Checkbox & Tiêu đề -->
+                <div class="flex items-start sm:items-center gap-3 flex-1 min-w-0">
+                  
+                  <!-- Trạng thái Toggle Button (Dừng lan truyền click) -->
+                  <button 
+                    @click.stop="cycleStatus(item)" 
+                    :title="'Trạng thái: ' + item.status + ' (Bấm để đổi)'"
+                    class="mt-0.5 sm:mt-0 flex-shrink-0 w-8 h-8 rounded-xl flex items-center justify-center transition-all cursor-pointer no-print"
+                    :class="{
+                      'bg-emerald-100 text-emerald-700 hover:bg-emerald-200 ring-2 ring-emerald-300': item.status === 'Đạt',
+                      'bg-blue-100 text-blue-700 hover:bg-blue-200 ring-2 ring-blue-300': item.status === 'Đang làm',
+                      'bg-slate-100 text-slate-400 hover:bg-slate-200 border border-slate-300': item.status === 'Chưa làm'
+                    }"
+                  >
+                    <!-- Icon Đạt -->
+                    <svg v-if="item.status === 'Đạt'" class="w-5 h-5 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <!-- Icon Đang làm -->
+                    <svg v-else-if="item.status === 'Đang làm'" class="w-4 h-4 animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    <!-- Icon Chưa làm -->
+                    <span v-else class="text-xs font-bold text-slate-400">○</span>
+                  </button>
+
+                  <!-- STT & Tiêu đề Hạng mục -->
+                  <div class="min-w-0 flex-1">
+                    <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1">
+                      <span class="text-[11px] font-mono font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
+                        #{{ item.id }}
+                      </span>
+                      <span class="text-xs font-medium text-slate-500">
+                        {{ item.group }}
+                      </span>
+                      <span class="text-slate-300">•</span>
+                      <!-- Badge Rủi ro -->
+                      <span 
+                        class="px-2 py-0.5 rounded-full text-[11px] font-bold border inline-flex items-center gap-1"
+                        :class="{
+                          'bg-red-50 text-red-700 border-red-200': item.risk === 'Cao',
+                          'bg-amber-50 text-amber-800 border-amber-200': item.risk === 'Trung bình',
+                          'bg-emerald-50 text-emerald-800 border-emerald-200': item.risk === 'Thấp',
+                        }"
+                      >
+                        <span class="w-1.5 h-1.5 rounded-full" :class="{
+                          'bg-red-600': item.risk === 'Cao',
+                          'bg-amber-500': item.risk === 'Trung bình',
+                          'bg-emerald-500': item.risk === 'Thấp'
+                        }"></span>
+                        {{ item.risk }}
+                      </span>
+                      <!-- Badge Người phụ trách -->
+                      <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-600 border border-slate-200 hidden sm:inline-block">
+                        👤 {{ item.assignee }}
+                      </span>
+                    </div>
+
+                    <h4 
+                      class="text-sm sm:text-base font-bold transition-colors leading-snug"
+                      :class="item.status === 'Đạt' ? 'text-slate-700' : 'text-slate-900'"
+                    >
+                      {{ item.title }}
+                    </h4>
+                  </div>
+
+                </div>
+
+                <!-- Bên phải: Trạng thái & Nút Mở rộng -->
+                <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+                  <span 
+                    class="px-2.5 py-1 rounded-lg text-xs font-bold whitespace-nowrap"
+                    :class="{
+                      'bg-emerald-100 text-emerald-800 border border-emerald-200': item.status === 'Đạt',
+                      'bg-blue-100 text-blue-800 border border-blue-200': item.status === 'Đang làm',
+                      'bg-slate-100 text-slate-600 border border-slate-200': item.status === 'Chưa làm'
+                    }"
+                  >
+                    {{ item.status }}
+                  </span>
+
+                  <div 
+                    class="w-7 h-7 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center transition-transform duration-200"
+                    :class="expandedMap[item.id] ? 'rotate-180 bg-slate-200 text-slate-800' : ''"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- BODY ACCORDION (KHI MỞ RỘNG HOẶC KHI IN) -->
+              <div 
+                v-show="expandedMap[item.id]" 
+                class="px-4 sm:px-6 pb-5 pt-2 border-t border-slate-100 bg-slate-50/50 space-y-4 text-xs sm:text-sm"
+              >
+                <!-- Grid 2 cột: Vì sao quan tâm & Hậu quả -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-2">
+                  
+                  <!-- Vì sao quan tâm -->
+                  <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs">
+                    <div class="flex items-center gap-1.5 font-bold text-slate-800 mb-1.5 text-xs uppercase tracking-wider text-blue-700">
+                      <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Vì sao cần quan tâm?
+                    </div>
+                    <p class="text-slate-600 leading-relaxed text-xs sm:text-sm">
+                      {{ item.whyCare }}
+                    </p>
+                  </div>
+
+                  <!-- Hậu quả nếu bỏ qua -->
+                  <div class="bg-red-50/40 p-3.5 rounded-xl border border-red-100 shadow-2xs">
+                    <div class="flex items-center gap-1.5 font-bold text-red-700 mb-1.5 text-xs uppercase tracking-wider">
+                      <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                      </svg>
+                      Hậu quả nếu bỏ qua / vi phạm:
+                    </div>
+                    <p class="text-red-800 leading-relaxed text-xs sm:text-sm">
+                      {{ item.consequences }}
+                    </p>
+                  </div>
+
+                </div>
+
+                <!-- Câu hỏi để tự kiểm tra -->
+                <div class="bg-amber-50/50 p-3.5 rounded-xl border border-amber-200/80">
+                  <div class="flex items-center gap-1.5 font-bold text-amber-900 mb-1 text-xs uppercase tracking-wider">
+                    <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Câu hỏi tự kiểm tra tại doanh nghiệp:
+                  </div>
+                  <p class="text-amber-950 font-medium leading-relaxed text-xs sm:text-sm">
+                    {{ item.questions }}
+                  </p>
+                </div>
+
+                <!-- Thông số tra cứu: Tần suất & Căn cứ pháp lý -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-white p-3 rounded-xl border border-slate-200">
+                  <div>
+                    <span class="font-bold text-slate-500 uppercase text-[10px] block">⏱️ Tần suất / Mốc thời hạn:</span>
+                    <span class="text-slate-800 font-medium">{{ item.frequency }}</span>
+                  </div>
+                  <div>
+                    <span class="font-bold text-slate-500 uppercase text-[10px] block">📜 Tra ở đâu (Văn bản pháp lý):</span>
+                    <span class="text-slate-800 font-medium">{{ item.reference }}</span>
+                  </div>
+                </div>
+
+                <!-- Khu vực điều khiển: Chuyển trạng thái & Ghi chú của người rà soát -->
+                <div class="bg-slate-100/70 p-3.5 rounded-xl border border-slate-200 space-y-2.5 no-print">
+                  <div class="flex flex-wrap items-center justify-between gap-2">
+                    <span class="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                      Cập nhật trạng thái rà soát:
+                    </span>
+                    <div class="inline-flex rounded-lg shadow-2xs bg-white p-1 border border-slate-200">
+                      <button 
+                        @click="setStatus(item, 'Chưa làm')" 
+                        :class="item.status === 'Chưa làm' ? 'bg-slate-800 text-white font-bold' : 'text-slate-600 hover:text-slate-900'"
+                        class="px-2.5 py-1 text-xs rounded-md transition cursor-pointer"
+                      >
+                        Chưa làm
+                      </button>
+                      <button 
+                        @click="setStatus(item, 'Đang làm')" 
+                        :class="item.status === 'Đang làm' ? 'bg-blue-600 text-white font-bold' : 'text-slate-600 hover:text-slate-900'"
+                        class="px-2.5 py-1 text-xs rounded-md transition cursor-pointer"
+                      >
+                        Đang làm
+                      </button>
+                      <button 
+                        @click="setStatus(item, 'Đạt')" 
+                        :class="item.status === 'Đạt' ? 'bg-emerald-600 text-white font-bold' : 'text-slate-600 hover:text-slate-900'"
+                        class="px-2.5 py-1 text-xs rounded-md transition cursor-pointer"
+                      >
+                        ✓ Đạt
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Ô nhập ghi chú riêng -->
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1 flex items-center justify-between">
+                      <span>Ghi chú của người rà soát (Tự động lưu vào trình duyệt):</span>
+                      <span v-if="savedItemNotification === item.id" class="text-emerald-600 font-bold text-[11px] animate-fade-in">
+                        ✓ Đã lưu!
+                      </span>
+                    </label>
+                    <textarea 
+                      v-model="item.note" 
+                      @input="onNoteChange(item)"
+                      rows="2"
+                      placeholder="Nhập tiến độ xử lý, người được giao việc, ngày dự kiến xong hoặc bằng chứng..." 
+                      class="w-full text-xs sm:text-sm px-3 py-2 bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 text-slate-800"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <!-- Print Note display -->
+                <div v-if="item.note" class="print-only border-t pt-2 mt-2">
+                  <p class="text-xs italic text-slate-700"><strong>Ghi chú rà soát:</strong> {{ item.note }}</p>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ==================================================== -->
+        <!-- TAB 2: 14 THAY ĐỔI PHÁP LÝ MỚI 2025 - 2026 -->
+        <!-- ==================================================== -->
+        <div v-show="activeTab === 'legalUpdates'" class="space-y-6">
+          
+          <div class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl p-6 text-white shadow-sm">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div>
+                <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-400 text-slate-900 mb-2 inline-block">
+                  Trọng tâm Tuân thủ Doanh nghiệp
+                </span>
+                <h2 class="text-xl sm:text-2xl font-black tracking-tight">
+                  14 Thay Đổi Pháp Lý Giai Đoạn 2025 - 2026
+                </h2>
+                <p class="text-slate-300 text-xs sm:text-sm mt-1 max-w-2xl">
+                  Bảng tổng hợp các văn bản luật mới ban hành và có hiệu lực, kèm đánh giá tác động trực tiếp đến danh mục 84 mục checklist doanh nghiệp.
+                </p>
+              </div>
+              <div class="text-right">
+                <span class="text-3xl font-extrabold text-amber-400">14</span>
+                <span class="text-xs text-slate-300 block">Văn bản mấu chốt</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Danh sách 14 điểm thay đổi -->
+          <div class="grid grid-cols-1 gap-4">
+            <div 
+              v-for="law in legalChanges" 
+              :key="law.id"
+              class="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs hover:border-slate-300 transition-all card-print"
+            >
+              <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2 border-b border-slate-100 pb-3">
+                <div>
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-slate-900 text-white">
+                      #{{ law.id }}
+                    </span>
+                    <span class="text-xs font-semibold px-2 py-0.5 rounded-full" :class="law.effectiveDate.includes('2026') ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'">
+                      Hiệu lực: {{ law.effectiveDate }}
+                    </span>
+                    <span class="text-xs font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                      {{ law.status }}
+                    </span>
+                  </div>
+                  <h3 class="text-base font-bold text-slate-900">
+                    {{ law.law }}
+                  </h3>
+                </div>
+              </div>
+
+              <!-- Tóm tắt thay đổi & Tác động -->
+              <div class="mt-3.5 space-y-3 text-xs sm:text-sm">
+                <div>
+                  <strong class="text-slate-800 block text-xs uppercase tracking-wider text-slate-500 mb-1">
+                    Nội dung thay đổi cốt lõi & Chế tài:
+                  </strong>
+                  <p class="text-slate-700 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
+                    {{ law.summary }}
+                  </p>
+                </div>
+
+                <div>
+                  <strong class="text-slate-800 block text-xs uppercase tracking-wider text-brand-700 mb-1">
+                    Hành động bắt buộc doanh nghiệp cần làm:
+                  </strong>
+                  <p class="text-slate-800 font-medium leading-relaxed bg-brand-50/50 p-3 rounded-xl border border-brand-100">
+                    {{ law.actionRequired }}
+                  </p>
+                </div>
+
+                <!-- Liên kết tới checklist tác động -->
+                <div class="pt-2 flex flex-wrap items-center gap-2">
+                  <span class="text-xs font-bold text-slate-500">Tác động đến các mục trong Checklist:</span>
+                  <button 
+                    v-for="itemId in law.impactItemIds" 
+                    :key="itemId"
+                    @click="navigateToItem(itemId)"
+                    title="Xem chi tiết mục này trên Checklist"
+                    class="px-2.5 py-1 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-900 hover:text-white text-slate-800 border border-slate-200 transition-all cursor-pointer flex items-center gap-1"
+                  >
+                    <span>Mục #{{ itemId }}</span>
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ==================================================== -->
+        <!-- TAB 3: LỊCH TUÂN THỦ TRONG NĂM -->
+        <!-- ==================================================== -->
+        <div v-show="activeTab === 'calendar'" class="space-y-6">
+          
+          <div class="bg-gradient-to-r from-blue-900 to-indigo-900 rounded-2xl p-6 text-white shadow-sm">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div>
+                <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-blue-300 text-blue-950 mb-2 inline-block">
+                  Hạn Định & Deadline Pháp Lý
+                </span>
+                <h2 class="text-xl sm:text-2xl font-black tracking-tight">
+                  Lịch Các Mốc Tuân Thủ Định Kỳ Trong Năm
+                </h2>
+                <p class="text-blue-200 text-xs sm:text-sm mt-1 max-w-2xl">
+                  Theo dõi lịch trình nộp báo cáo thuế, tài chính, lao động, BHXH và an toàn lao động theo Tháng, Quý và Năm để tránh bị xử phạt chậm nộp.
+                </p>
+              </div>
+              <div class="text-right">
+                <span class="text-xs bg-white/20 px-3 py-1.5 rounded-xl font-bold">Chu kỳ 2025 - 2026</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lọc theo chu kỳ -->
+          <div class="flex items-center gap-2 overflow-x-auto pb-1 no-print">
+            <button 
+              @click="calendarFilter = ''" 
+              :class="calendarFilter === '' ? 'bg-slate-900 text-white font-bold' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'"
+              class="px-3.5 py-1.5 rounded-xl text-xs whitespace-nowrap transition cursor-pointer"
+            >
+              Tất cả các mốc
+            </button>
+            <button 
+              v-for="cal in complianceCalendar" 
+              :key="cal.period"
+              @click="calendarFilter = cal.period" 
+              :class="calendarFilter === cal.period ? 'bg-slate-900 text-white font-bold' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'"
+              class="px-3.5 py-1.5 rounded-xl text-xs whitespace-nowrap transition cursor-pointer"
+            >
+              {{ cal.period }}
+            </button>
+          </div>
+
+          <!-- Danh sách Timeline -->
+          <div class="space-y-6">
+            <div 
+              v-for="group in filteredCalendar" 
+              :key="group.period" 
+              class="space-y-3"
+            >
+              <div class="flex items-center gap-3">
+                <div class="w-3 h-3 rounded-full bg-blue-600"></div>
+                <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">
+                  {{ group.period }}
+                </h3>
+                <span class="h-px bg-slate-200 flex-1"></span>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                <div 
+                  v-for="(calItem, idx) in group.items" 
+                  :key="idx"
+                  class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs hover:border-blue-200 transition-all card-print"
+                >
+                  <div class="flex items-start justify-between gap-2 mb-2">
+                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 text-xs font-bold border border-blue-100">
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      {{ calItem.deadline }}
+                    </div>
+                    <span 
+                      class="px-2 py-0.5 rounded text-[11px] font-bold"
+                      :class="calItem.riskLevel === 'Cao' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-amber-50 text-amber-800 border border-amber-200'"
+                    >
+                      Rủi ro: {{ calItem.riskLevel }}
+                    </span>
+                  </div>
+
+                  <h4 class="text-sm sm:text-base font-bold text-slate-900 mb-1">
+                    {{ calItem.title }}
+                  </h4>
+
+                  <p class="text-xs text-slate-600 leading-relaxed mb-3">
+                    {{ calItem.description }}
+                  </p>
+
+                  <div class="flex items-center justify-between text-xs pt-2 border-t border-slate-100 text-slate-500 font-medium">
+                    <span>Phụ trách: <strong class="text-slate-800">{{ calItem.department }}</strong></span>
+                    <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-[10px] font-bold">{{ calItem.category }}</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500 no-print mt-12">
+        <div class="max-w-7xl mx-auto px-4">
+          <p class="font-semibold text-slate-700">
+            Compliance Checklist Dashboard © 2025 - 2026 | Công Cụ Tra Cứu & Quản Trị Tuân Thủ Doanh Nghiệp Toàn Diện
+          </p>
+          <p class="text-[11px] text-slate-400 mt-1">
+            Dữ liệu được lưu trữ trực tiếp trên trình duyệt của bạn (LocalStorage) • Sẵn sàng in báo cáo & xuất dữ liệu JSON
+          </p>
+        </div>
+      </footer>
+
+      <!-- TOAST NOTIFICATION -->
+      <div 
+        v-if="toastMessage" 
+        class="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-2.5 text-xs font-semibold transition-all animate-bounce"
+      >
+        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        <span>{{ toastMessage }}</span>
+      </div>
+
+    </div>
+
+    
+<script>
+  const { createApp, ref, computed, reactive, onMounted, watch } = Vue;
+
+  const rawChecklist = [
+  {
+    "id": 1,
+    "group": "Pháp lý doanh nghiệp",
+    "title": "Góp đủ vốn điều lệ đúng hạn",
+    "risk": "Trung bình",
+    "consequences": "Phạt hành chính về đăng ký doanh nghiệp, khung với tổ chức khoảng 30-50 triệu và buộc điều chỉnh vốn. Thành viên chịu trách nhiệm theo số vốn đã cam kết, không phải số đã góp.",
+    "whyCare": "Nhiều người đăng ký vốn cao cho đẹp hồ sơ nhưng không góp đủ. Khi quá hạn mà không điều chỉnh, công ty rơi vào trạng thái vi phạm và thành viên phải chịu trách nhiệm tương ứng phần đã cam kết.",
+    "questions": "Sổ sách có chứng từ góp vốn khớp với số đăng ký chưa? Nếu chưa góp đủ, đã làm thủ tục điều chỉnh vốn chưa?",
+    "frequency": "Một lần sau thành lập; kiểm tra lại khi tăng vốn",
+    "reference": "Luật Doanh nghiệp, các điều về góp vốn của từng loại hình",
+    "assignee": "Kế toán, pháp chế",
+    "status": "Chưa làm",
+    "note": "Ví dụ cách ghi: Thiếu chứng từ góp vốn đợt 2. Kế toán bổ sung trước 30/9."
+  },
+  {
+    "id": 2,
+    "group": "Pháp lý doanh nghiệp",
+    "title": "Biển hiệu tại trụ sở đủ thông tin",
+    "risk": "Thấp",
+    "consequences": "Phạt hành chính lĩnh vực quảng cáo, khung cũ với tổ chức khoảng 20-30 triệu, có khung mới từ giữa 2026. Rủi ro gián tiếp lớn hơn: bị coi là không hoạt động tại địa chỉ.",
+    "whyCare": "Biển hiệu bị xem là chuyện nhỏ, nhưng thiếu tên đúng đăng ký, địa chỉ, số điện thoại là có chế tài. Cơ quan thuế đi xác minh địa chỉ cũng nhìn biển hiệu để kết luận công ty có hoạt động không.",
+    "questions": "Biển hiệu có đủ tên công ty đúng giấy đăng ký, địa chỉ, số điện thoại không? Có ở vị trí nhìn thấy được không?",
+    "frequency": "Luôn duy trì",
+    "reference": "Luật Quảng cáo phần biển hiệu; nghị định xử phạt lĩnh vực văn hoá, quảng cáo hiện hành",
+    "assignee": "Hành chính",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 3,
+    "group": "Pháp lý doanh nghiệp",
+    "title": "Hoạt động thật tại địa chỉ đăng ký",
+    "risk": "Cao",
+    "consequences": "Khoá mã số thuế, không xuất được hoá đơn, không nộp được tờ khai. Người đại diện bị tạm hoãn xuất cảnh nếu còn nợ thuế, không cần ngưỡng. Mở lại tốn nhiều tuần.",
+    "whyCare": "Nếu cơ quan thuế xác minh không thấy công ty ở địa chỉ đăng ký, mã số thuế có thể bị khoá và người đại diện có thể bị hạn chế xuất cảnh khi còn nợ thuế, không cần ngưỡng nợ tối thiểu. Đây là tình huống phổ biến với công ty thuê địa chỉ ảo hoặc đã chuyển văn phòng mà chưa đăng ký lại.",
+    "questions": "Địa chỉ trên giấy đăng ký có đúng nơi đang làm việc không? Có người nhận thư, tiếp đoàn kiểm tra không?",
+    "frequency": "Kiểm tra mỗi khi chuyển văn phòng",
+    "reference": "Luật Quản lý thuế; nghị định về tạm hoãn xuất cảnh do nợ thuế",
+    "assignee": "Hành chính, pháp chế",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 4,
+    "group": "Pháp lý doanh nghiệp",
+    "title": "Đăng ký thay đổi thông tin doanh nghiệp đúng hạn",
+    "risk": "Trung bình",
+    "consequences": "Phạt hành chính, khung với tổ chức khoảng 20-60 triệu tuỳ thời gian chậm. Hồ sơ ký trong thời gian thông tin sai có thể bị đặt câu hỏi.",
+    "whyCare": "Đổi người đại diện, địa chỉ, vốn, ngành nghề mà không cập nhật với cơ quan đăng ký kinh doanh trong thời hạn quy định là bị phạt. Thường bị phát hiện khi làm thủ tục khác.",
+    "questions": "Lần thay đổi gần nhất đã đăng ký chưa? Giấy đăng ký hiện tại có khớp thực tế không?",
+    "frequency": "Trong thời hạn quy định sau mỗi thay đổi",
+    "reference": "Luật Doanh nghiệp; nghị định về đăng ký doanh nghiệp",
+    "assignee": "Pháp chế",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 5,
+    "group": "Pháp lý doanh nghiệp",
+    "title": "Giấy phép ngành nghề có điều kiện",
+    "risk": "Cao",
+    "consequences": "Bị buộc dừng hoạt động, phạt hành chính theo luật chuyên ngành, có thể bị thu hồi giấy đăng ký. Doanh thu từ hoạt động chưa có phép có thể bị xử lý.",
+    "whyCare": "Một số ngành phải có giấy phép riêng hoặc đáp ứng điều kiện trước khi hoạt động. Kinh doanh trước khi có giấy phép có thể bị phạt và bị buộc dừng.",
+    "questions": "Ngành đang làm có nằm trong danh mục ngành nghề đầu tư kinh doanh có điều kiện không? Giấy phép còn hạn không?",
+    "frequency": "Theo hạn từng giấy phép",
+    "reference": "Luật Đầu tư, phụ lục ngành nghề có điều kiện; luật chuyên ngành",
+    "assignee": "Pháp chế",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 6,
+    "group": "Pháp lý doanh nghiệp",
+    "title": "Hồ sơ nội bộ công ty",
+    "risk": "Thấp",
+    "consequences": "Phạt hành chính nhỏ. Rủi ro thật là tranh chấp giữa thành viên, cổ đông không có căn cứ giải quyết, và ngân hàng, nhà đầu tư dừng giao dịch khi thiếu hồ sơ.",
+    "whyCare": "Điều lệ, sổ đăng ký thành viên hoặc cổ đông, biên bản họp, nghị quyết là thứ ngân hàng, nhà đầu tư và cơ quan kiểm tra hay yêu cầu. Thiếu thì khó chứng minh quyết định của công ty là hợp lệ.",
+    "questions": "Có bản điều lệ đang hiệu lực không? Sổ thành viên có cập nhật sau lần chuyển nhượng gần nhất không?",
+    "frequency": "Cập nhật sau mỗi thay đổi",
+    "reference": "Luật Doanh nghiệp, điều về tài liệu phải lưu giữ",
+    "assignee": "Pháp chế",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 7,
+    "group": "Pháp lý doanh nghiệp",
+    "title": "Chữ ký số, tài khoản điện tử",
+    "risk": "Trung bình",
+    "consequences": "Trễ hạn nộp tờ khai vì hết hạn hoặc mất mật khẩu, dẫn đến phạt chậm nộp tờ khai theo số ngày. Khi mã số thuế bị khoá thì không cấp lại được chữ ký số.",
+    "whyCare": "Chữ ký số hết hạn đúng ngày nộp tờ khai là chuyện xảy ra thường xuyên. Công ty bị khoá mã số thuế còn gặp vòng luẩn quẩn: cần chữ ký số để nộp tờ khai, nhưng không được cấp chữ ký số vì mã số thuế đang khoá.",
+    "questions": "Chữ ký số còn hạn bao lâu? Ai giữ mật khẩu tài khoản thuế điện tử, bảo hiểm xã hội điện tử?",
+    "frequency": "Kiểm tra mỗi quý",
+    "reference": "Nhà cung cấp chữ ký số; cổng thuế điện tử",
+    "assignee": "Kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 8,
+    "group": "Pháp lý doanh nghiệp",
+    "title": "Uỷ quyền khi người đại diện đi vắng",
+    "risk": "Thấp",
+    "consequences": "Hồ sơ, hợp đồng ký trong thời gian vắng mặt có thể bị tranh cãi về hiệu lực. Phạt hành chính nhỏ nếu bị kiểm tra.",
+    "whyCare": "Người đại diện theo pháp luật vắng mặt dài ngày mà không uỷ quyền bằng văn bản thì hồ sơ ký trong thời gian đó có thể bị đặt câu hỏi về hiệu lực.",
+    "questions": "Có mẫu uỷ quyền sẵn chưa? Lần đi công tác dài gần nhất có uỷ quyền không?",
+    "frequency": "Mỗi lần vắng dài ngày",
+    "reference": "Luật Doanh nghiệp, điều về người đại diện theo pháp luật",
+    "assignee": "Pháp chế",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 9,
+    "group": "Pháp lý doanh nghiệp",
+    "title": "Lưu trữ chứng từ kế toán",
+    "risk": "Cao",
+    "consequences": "Không xuất trình được chứng từ khi kiểm tra là chi phí bị loại, thuế đầu vào bị bác, truy thu cộng phạt 20% và chậm nộp. Phạt riêng về lưu trữ với tổ chức khoảng 10-40 triệu.",
+    "whyCare": "Chứng từ phải lưu nhiều năm. Khi bị kiểm tra thuế cho các năm cũ, không xuất trình được chứng từ là chi phí bị loại.",
+    "questions": "Chứng từ các năm trước đang lưu ở đâu, dạng giấy hay điện tử? Có tìm lại được trong 1 ngày không?",
+    "frequency": "Liên tục",
+    "reference": "Luật Kế toán, điều về bảo quản, lưu trữ tài liệu kế toán",
+    "assignee": "Kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 10,
+    "group": "Pháp lý doanh nghiệp",
+    "title": "Bố trí kế toán trưởng hoặc người phụ trách kế toán",
+    "risk": "Trung bình",
+    "consequences": "Phạt hành chính lĩnh vực kế toán, khung với tổ chức khoảng 20-40 triệu, phạt vì thiếu chức danh dù sổ sách đầy đủ.",
+    "whyCare": "Đơn vị kế toán phải có kế toán trưởng. Chưa bổ nhiệm được thì bố trí người phụ trách kế toán hoặc thuê dịch vụ, nhưng chỉ tạm trong thời hạn tối đa theo luật, sau đó phải có kế toán trưởng đủ điều kiện (chứng chỉ bồi dưỡng kế toán trưởng, trình độ, năm kinh nghiệm). Doanh nghiệp siêu nhỏ được miễn, chỉ cần người phụ trách kế toán. Nhiều công ty nhỏ có kế toán làm đầy đủ sổ sách, thuế, nhưng không ai đứng chức danh kế toán trưởng, vẫn bị phạt vì thiếu chức danh chứ không phải vì thiếu việc.",
+    "questions": "Công ty có còn là doanh nghiệp siêu nhỏ theo tiêu chí hiện hành không? Nếu không, ai đang là kế toán trưởng, có quyết định bổ nhiệm và chứng chỉ không? Nếu chỉ có người phụ trách kế toán, đã quá thời hạn tạm chưa?",
+    "frequency": "Kiểm tra khi vượt ngưỡng siêu nhỏ; thời hạn tạm bố trí phụ trách kế toán theo luật",
+    "reference": "Luật Kế toán, điều về kế toán trưởng và tiêu chuẩn kế toán trưởng; nghị định hướng dẫn Luật Kế toán; nghị định về tiêu chí doanh nghiệp siêu nhỏ; thông tư về kế toán doanh nghiệp siêu nhỏ (bản mới từ giữa năm 2026); nghị định xử phạt lĩnh vực kế toán",
+    "assignee": "Kế toán, giám đốc",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 11,
+    "group": "Pháp lý doanh nghiệp",
+    "title": "Kiểm kê và phân quyền chữ ký số",
+    "risk": "Cao",
+    "consequences": "Người giữ chữ ký số ký được hợp đồng, hoá đơn, hồ sơ pháp lý thay công ty mà không ai duyệt. Hậu quả không giới hạn ở tiền phạt mà là nghĩa vụ hợp đồng và trách nhiệm pháp lý công ty phải gánh.",
+    "whyCare": "Chữ ký số của doanh nghiệp có giá trị như con dấu và chữ ký người đại diện cộng lại: ký được tờ khai thuế, hồ sơ bảo hiểm, hoá đơn, hợp đồng điện tử, hồ sơ đăng ký kinh doanh, một số giao dịch ngân hàng. Một chiếc token duy nhất nằm trong túi kế toán hoặc ở công ty dịch vụ kế toán nghĩa là người đó ký thay công ty được mọi thứ mà không ai duyệt. Rủi ro thường gặp: nhân viên nghỉ mang theo hoặc giữ mật khẩu, ký hợp đồng hay hoá đơn chưa được duyệt, chữ ký số ký hoá đơn tự động nằm trên máy chủ không ai quản, token hết hạn đúng ngày nộp tờ khai.",
+    "questions": "Công ty đang có bao nhiêu chữ ký số (token, chữ ký số từ xa, chữ ký số cá nhân của người đại diện)? Mỗi cái ai giữ, ký được loại tài liệu nào, hết hạn khi nào? Có tách chữ ký số cho thuế và bảo hiểm, cho hoá đơn, cho hợp đồng không? Có nhật ký ký hoặc quy chế sử dụng chữ ký số không? Người nghỉ việc có bị thu hồi quyền ngay không?",
+    "frequency": "Kiểm kê mỗi quý; rà quyền khi thay người",
+    "reference": "Luật Giao dịch điện tử năm 2023; nghị định về chữ ký điện tử và dịch vụ tin cậy năm 2025; quy chế nội bộ về sử dụng chữ ký số và con dấu",
+    "assignee": "Giám đốc, kế toán, kỹ thuật",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 12,
+    "group": "Pháp lý doanh nghiệp",
+    "title": "Danh mục hồ sơ lưu trữ và cấu trúc lưu trữ",
+    "risk": "Trung bình",
+    "consequences": "Không phạt trực tiếp, nhưng khi kiểm tra không tìm ra hồ sơ trong thời hạn yêu cầu thì bị coi là không có, dẫn đến các hậu quả của mục lưu trữ chứng từ.",
+    "whyCare": "Khi có đoàn kiểm tra, câu hỏi đầu tiên là danh mục hồ sơ, không phải từng tờ. Công ty có đủ giấy tờ nhưng rải trong email, máy cá nhân, tủ hồ sơ của người đã nghỉ thì cũng như không có. Nên có một danh mục hồ sơ theo năm và theo nhóm (thuế, kế toán, lao động, bảo hiểm, pháp lý, dữ liệu cá nhân), mỗi nhóm ghi rõ lưu ở đâu, ai giữ, thời hạn lưu. Tài liệu kế toán có thời hạn lưu tối thiểu theo loại, thường 5 năm, 10 năm hoặc lâu hơn.",
+    "questions": "Có danh mục hồ sơ bằng văn bản chưa? Người mới vào có tìm được hồ sơ năm 2022 trong 1 giờ không? Hồ sơ đang lưu trên hệ thống công ty hay trên máy, email cá nhân của nhân viên?",
+    "frequency": "Lập một lần, cập nhật hằng năm khi đóng sổ",
+    "reference": "Luật Kế toán và nghị định hướng dẫn, các điều về loại tài liệu và thời hạn lưu trữ; quy định về lưu trữ tài liệu điện tử hiện hành",
+    "assignee": "Kế toán, hành chính",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 13,
+    "group": "Pháp lý doanh nghiệp",
+    "title": "Bàn giao khi kế toán, nhân sự nghỉ việc",
+    "risk": "Cao",
+    "consequences": "Mất quyền truy cập cổng thuế, bảo hiểm, ngân hàng; trễ hạn nhiều kỳ liên tiếp; không tìm ra chứng từ cũ. Nhiều vụ truy thu bắt đầu từ một lần đổi kế toán không bàn giao.",
+    "whyCare": "Người giữ sổ sách nghỉ việc là lúc công ty dễ mất dấu hồ sơ nhất. Bàn giao phải có biên bản kèm danh mục: sổ sách, chứng từ theo năm, tài khoản và mật khẩu các cổng (thuế, bảo hiểm, hoá đơn điện tử, ngân hàng), chữ ký số, con dấu, hợp đồng đang hiệu lực, việc đang dở và hạn sắp tới. Nếu chữ ký số, tài khoản cổng thuế đứng tên hoặc gắn số điện thoại cá nhân của người nghỉ thì phải chuyển ngay.",
+    "questions": "Có mẫu biên bản bàn giao chưa? Tài khoản các cổng và chữ ký số đang gắn với email, số điện thoại của công ty hay của cá nhân?",
+    "frequency": "Mỗi lần thay người",
+    "reference": "Luật Kế toán, điều về trách nhiệm khi thay đổi người làm kế toán; quy chế nội bộ",
+    "assignee": "Giám đốc, kế toán, nhân sự",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 14,
+    "group": "Pháp lý doanh nghiệp",
+    "title": "Sao lưu và khôi phục dữ liệu kế toán, hoá đơn điện tử",
+    "risk": "Cao",
+    "consequences": "Mất dữ liệu kế toán là không tái tạo được sổ sách nhiều năm; bị coi là không có tài liệu kế toán, chi phí bị loại hàng loạt, cộng phạt về lưu trữ.",
+    "whyCare": "Dữ liệu phần mềm kế toán, hoá đơn điện tử dạng gốc, hồ sơ số là tài liệu kế toán, mất là không tái tạo được. Phần mềm cài trên máy thì phải có bản sao lưu định kỳ ở nơi khác và có thử khôi phục thật. Phần mềm trên nền tảng đám mây thì phải xem hợp đồng nhà cung cấp cam kết gì về sao lưu, cách xuất dữ liệu khi ngừng dịch vụ, và công ty vẫn nên tự xuất định kỳ. Hoá đơn điện tử gốc là tệp dữ liệu có chữ ký số, không phải bản in; cần tải về lưu riêng vì nhà cung cấp chỉ giữ theo hợp đồng.",
+    "questions": "Bản sao lưu gần nhất là khi nào, để ở đâu, ai kiểm tra? Đã thử khôi phục từ bản sao lưu bao giờ chưa, mất bao lâu? Nếu đổi phần mềm kế toán, dữ liệu cũ mở bằng gì?",
+    "frequency": "Sao lưu theo lịch; thử khôi phục ít nhất 1 lần mỗi năm",
+    "reference": "Luật Kế toán và nghị định hướng dẫn, điều về tài liệu kế toán điện tử và bảo quản; nghị định về hoá đơn, chứng từ, điều về lưu trữ hoá đơn điện tử; hợp đồng với nhà cung cấp phần mềm",
+    "assignee": "Kế toán, kỹ thuật",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 15,
+    "group": "Pháp lý doanh nghiệp",
+    "title": "Rà nợ lệ phí môn bài các năm trước",
+    "risk": "Thấp",
+    "consequences": "Nợ vài triệu mỗi năm cộng tiền chậm nộp, nhưng là nợ thuế nên chặn giải thể và có thể kéo theo tạm hoãn xuất cảnh khi công ty bị coi là bỏ địa chỉ.",
+    "whyCare": "Lệ phí môn bài đã được bãi bỏ từ đầu năm 2026, nhưng khoản chưa nộp của các năm trước vẫn là nợ thuế. Nhiều công ty giải thể mới phát hiện nợ này kèm tiền chậm nộp.",
+    "questions": "Đã tra cứu nghĩa vụ thuế trên cổng thuế điện tử xem còn nợ môn bài năm nào không?",
+    "frequency": "Một lần",
+    "reference": "Nghị quyết của Quốc hội về phát triển kinh tế tư nhân năm 2025; cổng thuế điện tử mục tra cứu nghĩa vụ",
+    "assignee": "Kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 16,
+    "group": "Thuế",
+    "title": "Tờ khai thuế giá trị gia tăng",
+    "risk": "Cao",
+    "consequences": "Phạt chậm nộp tờ khai theo số ngày, khung với tổ chức từ vài triệu đến khoảng 25 triệu mỗi tờ khai; quá 90 ngày có thể bị xem là trốn thuế. Đây là nguồn phạt lớn nhất của công ty bỏ không.",
+    "whyCare": "Đây là tờ khai phải nộp đều kể cả khi không có doanh thu. Phần lớn tiền phạt của các công ty bỏ không đến từ việc bỏ nộp tờ khai này nhiều kỳ liên tiếp, phạt tính theo từng tờ khai.",
+    "questions": "Công ty đang khai theo tháng hay quý? Tờ khai gần nhất nộp ngày nào? Có kỳ nào bị bỏ trống không?",
+    "frequency": "Theo tháng hoặc quý, hạn theo quy định hiện hành",
+    "reference": "Luật Quản lý thuế; nghị định hướng dẫn hiện hành về thời hạn nộp hồ sơ khai thuế",
+    "assignee": "Kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 17,
+    "group": "Thuế",
+    "title": "Tờ khai thuế thu nhập cá nhân của tổ chức trả thu nhập",
+    "risk": "Trung bình",
+    "consequences": "Phạt chậm nộp tờ khai theo số ngày như tờ khai giá trị gia tăng, cộng chậm nộp tiền thuế đã khấu trừ 0,03% mỗi ngày.",
+    "whyCare": "Kỳ không phát sinh khấu trừ thì có thể không phải nộp tờ khai, nhưng quy định về trường hợp này từng thay đổi. Nên xác nhận lại cách hiểu hiện hành thay vì mặc định.",
+    "questions": "Kỳ nào có trả lương và có khấu trừ? Kế toán đang áp dụng cách hiểu nào cho kỳ không phát sinh?",
+    "frequency": "Cùng kỳ với thuế giá trị gia tăng",
+    "reference": "Nghị định hướng dẫn Luật Quản lý thuế, điều về các trường hợp không phải nộp hồ sơ khai thuế",
+    "assignee": "Kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 18,
+    "group": "Thuế",
+    "title": "Tạm nộp thuế thu nhập doanh nghiệp theo quý",
+    "risk": "Trung bình",
+    "consequences": "Tiền chậm nộp 0,03% mỗi ngày trên phần thiếu so với tỉ lệ tối thiểu, tính từ hạn nộp quý cuối đến ngày nộp đủ. Với số thuế lớn đây là khoản đáng kể.",
+    "whyCare": "Không có tờ khai quý nên hay bị quên. Nếu tổng số tạm nộp trong năm thấp hơn tỉ lệ tối thiểu so với số quyết toán, phần thiếu bị tính tiền chậm nộp dù cuối năm nộp đủ.",
+    "questions": "Từng quý đã tạm nộp chưa? Tổng đã tạm nộp so với ước tính cả năm đạt tỉ lệ tối thiểu theo quy định chưa?",
+    "frequency": "Theo quý",
+    "reference": "Nghị định hướng dẫn Luật Quản lý thuế, điều về tạm nộp",
+    "assignee": "Kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 19,
+    "group": "Thuế",
+    "title": "Quyết toán thuế thu nhập doanh nghiệp và báo cáo tài chính năm",
+    "risk": "Cao",
+    "consequences": "Phạt chậm nộp hồ sơ quyết toán và báo cáo tài chính, mỗi loại phạt riêng; ngân hàng, đối tác lớn từ chối hồ sơ vay, đấu thầu khi không có báo cáo tài chính đã nộp.",
+    "whyCare": "Lỗ vẫn phải nộp hồ sơ quyết toán và báo cáo tài chính. Đây là bộ hồ sơ mà ngân hàng, đối tác lớn, nhà đầu tư sẽ hỏi đến, nên nộp trễ hay nộp không khớp đều để lại dấu vết.",
+    "questions": "Hồ sơ quyết toán và báo cáo tài chính năm trước đã nộp chưa, có biên nhận không? Số liệu có khớp giữa các báo cáo không?",
+    "frequency": "Hằng năm, hạn theo quy định hiện hành",
+    "reference": "Luật Quản lý thuế; Luật Kế toán",
+    "assignee": "Kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 20,
+    "group": "Thuế",
+    "title": "Quyết toán thuế thu nhập cá nhân năm",
+    "risk": "Trung bình",
+    "consequences": "Phạt chậm nộp hồ sơ quyết toán theo số ngày; nhân viên không quyết toán được thuế của họ, phát sinh khiếu nại.",
+    "whyCare": "Chỉ cần trong năm có trả lương là phải quyết toán, kể cả không ai đến mức nộp thuế. Hay bị bỏ qua ở công ty nhỏ trả lương thấp.",
+    "questions": "Năm trước có trả lương cho ai không? Đã nộp quyết toán chưa? Nhân viên uỷ quyền quyết toán đã ký giấy chưa?",
+    "frequency": "Hằng năm",
+    "reference": "Nghị định hướng dẫn Luật Quản lý thuế; thông tư về thuế thu nhập cá nhân",
+    "assignee": "Kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 21,
+    "group": "Thuế",
+    "title": "Thuế suất thuế thu nhập doanh nghiệp áp dụng",
+    "risk": "Trung bình",
+    "consequences": "Áp thấp hơn mức đúng là khai thiếu thuế, truy thu cộng phạt 20% và chậm nộp. Áp cao hơn là nộp thừa, xin hoàn mất thời gian.",
+    "whyCare": "Từ kỳ tính thuế 2025 có mức thuế suất thấp hơn cho doanh nghiệp doanh thu nhỏ, xác định theo doanh thu năm trước liền kề. Có điều kiện loại trừ với công ty con, công ty liên kết. Áp sai mức là nộp thiếu hoặc nộp thừa.",
+    "questions": "Công ty đang áp thuế suất nào? Căn cứ doanh thu năm nào? Công ty có công ty mẹ hoặc công ty liên kết không?",
+    "frequency": "Xác định đầu mỗi năm",
+    "reference": "Luật Thuế thu nhập doanh nghiệp năm 2025 và nghị định hướng dẫn, điều về thuế suất",
+    "assignee": "Kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 22,
+    "group": "Thuế",
+    "title": "Chứng từ thanh toán không dùng tiền mặt",
+    "risk": "Cao",
+    "consequences": "Mất quyền khấu trừ thuế giá trị gia tăng và bị loại chi phí cho toàn bộ hoá đơn trên ngưỡng trả bằng tiền mặt. Truy thu cả hai loại thuế cộng phạt 20% và chậm nộp.",
+    "whyCare": "Ngưỡng bắt buộc chuyển khoản để được khấu trừ thuế và tính chi phí đã hạ xuống thấp hơn nhiều so với trước. Chi bằng tiền mặt, hoặc nộp tiền mặt vào tài khoản người bán, cho hoá đơn trên ngưỡng là mất quyền khấu trừ.",
+    "questions": "Ngưỡng hiện hành là bao nhiêu? Quy trình mua hàng có chặn thanh toán tiền mặt trên ngưỡng không? Nhiều hoá đơn nhỏ cùng ngày cùng nhà cung cấp xử lý sao?",
+    "frequency": "Từng khoản chi",
+    "reference": "Luật Thuế giá trị gia tăng năm 2024 và nghị định hướng dẫn, điều về điều kiện khấu trừ",
+    "assignee": "Kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 23,
+    "group": "Thuế",
+    "title": "Thuế nhà thầu khi trả tiền cho nhà cung cấp nước ngoài",
+    "risk": "Cao",
+    "consequences": "Truy thu thuế nhà thầu trên toàn bộ tiền đã trả ra nước ngoài trong thời hiệu, cộng phạt 20% và chậm nộp; chi phí tương ứng có thể bị loại. Thường là khoản truy thu lớn nhất với công ty công nghệ.",
+    "whyCare": "Công ty dùng dịch vụ nước ngoài như máy chủ đám mây, quảng cáo, phần mềm thuê bao, trí tuệ nhân tạo thường trả bằng thẻ và không kê khai gì. Khi kiểm tra, cơ quan thuế đối chiếu dòng tiền ra nước ngoài và truy thu. Quy định về trách nhiệm khấu trừ của bên mua vừa thay đổi giữa năm 2026, cách áp dụng đang được thảo luận.",
+    "questions": "Đã lập danh sách toàn bộ nhà cung cấp nước ngoài đang trả tiền chưa? Nhà cung cấp nào đã đăng ký thuế tại Việt Nam, nhà cung cấp nào chưa? Công ty có kê khai và nộp thuế nhà thầu cho khoản nào không?",
+    "frequency": "Rà toàn bộ một lần, sau đó theo từng lần thanh toán",
+    "reference": "Thông tư về thuế nhà thầu; nghị định hướng dẫn Luật Quản lý thuế năm 2026, phần nhà cung cấp nước ngoài; danh sách nhà cung cấp nước ngoài đã đăng ký trên cổng thuế",
+    "assignee": "Kế toán, tư vấn thuế",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 24,
+    "group": "Thuế",
+    "title": "Dịch vụ số mua từ nhà cung cấp nước ngoài đã đăng ký thuế tại Việt Nam",
+    "risk": "Cao",
+    "consequences": "Hai kiểu sai ngược nhau: khấu trừ thuế giá trị gia tăng cho các khoản này là khấu trừ sai, truy thu cộng phạt 20% và chậm nộp trên toàn bộ thuê bao nhiều năm; tự loại khỏi chi phí vì 'không có hoá đơn' là nộp thừa thuế thu nhập doanh nghiệp không cần thiết. Công ty công nghệ có hàng chục thuê bao loại này nên số tích luỹ lớn.",
+    "whyCare": "Trường hợp phổ biến nhất hiện nay: mua ChatGPT, Claude, Google Workspace, Microsoft 365, quảng cáo Meta, Google. Các nhà cung cấp này đã đăng ký thuế tại Việt Nam và tự kê khai, nên công ty không phải khấu trừ thuế nhà thầu thay. Nhưng công ty chỉ nhận được invoice, không có hoá đơn giá trị gia tăng Việt Nam và không có chứng từ nộp thuế thay, nên không đủ điều kiện khấu trừ thuế giá trị gia tăng đầu vào. Khoản chi vẫn được tính vào chi phí được trừ khi tính thuế thu nhập doanh nghiệp nếu đủ hồ sơ. Cơ quan thuế địa phương đã có văn bản trả lời theo hướng này cuối tháng 8/2026 cho trường hợp ChatGPT Business. Hai kết luận này độc lập, kế toán hay gộp thành một.",
+    "questions": "Danh sách thuê bao nước ngoài của công ty, nhà cung cấp nào đã đăng ký thuế tại Việt Nam (tra trên cổng nhà cung cấp nước ngoài của cơ quan thuế)? Với các khoản đó, kế toán có đang khấu trừ thuế giá trị gia tăng không (sai)? Có đang tự loại khỏi chi phí không (thiệt)? Mỗi khoản đã lưu đủ 5 loại hồ sơ: invoice, hợp đồng hoặc điều khoản dịch vụ, chứng từ thanh toán, tài liệu chứng minh dùng cho kinh doanh (tài khoản gắn nhân viên, mục đích), hồ sơ thuế nhà thầu nếu có?",
+    "frequency": "Rà toàn bộ một lần; kiểm tra khi thêm thuê bao mới",
+    "reference": "Nghị định hướng dẫn Luật Thuế giá trị gia tăng năm 2025, điều về hoá đơn, chứng từ nộp thuế và chứng từ thanh toán; nghị định hướng dẫn Luật Thuế thu nhập doanh nghiệp năm 2025, điều về chi phí được trừ; thông tư năm 2026 về khai, nộp thuế của nhà cung cấp nước ngoài; danh sách nhà cung cấp nước ngoài đã đăng ký trên cổng thuế",
+    "assignee": "Kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 25,
+    "group": "Thuế",
+    "title": "Khấu trừ thuế khi trả thu nhập cho cá nhân không ký hợp đồng lao động",
+    "risk": "Trung bình",
+    "consequences": "Công ty bị truy thu thuế phải khấu trừ thay cộng phạt và chậm nộp, dù tiền đã trả hết cho cá nhân và không đòi lại được.",
+    "whyCare": "Trả tiền cho cộng tác viên, freelancer, người làm thời vụ từ một mức nhất định mỗi lần là phải khấu trừ thuế trước khi trả. Hay bị bỏ qua vì trả qua chuyển khoản cá nhân.",
+    "questions": "Có khoản chi nào cho cá nhân không có hợp đồng lao động không? Đã khấu trừ và cấp chứng từ khấu trừ chưa?",
+    "frequency": "Từng lần chi trả",
+    "reference": "Thông tư hướng dẫn Luật Thuế thu nhập cá nhân, điều về khấu trừ thuế",
+    "assignee": "Kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 26,
+    "group": "Thuế",
+    "title": "Thuế khi chia lợi nhuận cho chủ sở hữu",
+    "risk": "Trung bình",
+    "consequences": "Truy thu thuế thu nhập cá nhân từ đầu tư vốn cộng phạt và chậm nộp. Dễ bị phát hiện vì đối chiếu với nghị quyết chia lợi nhuận và dòng tiền ra tài khoản cá nhân.",
+    "whyCare": "Chia lợi nhuận cho thành viên hoặc cổ đông là cá nhân có phát sinh thuế thu nhập cá nhân từ đầu tư vốn và công ty phải khấu trừ. Luật thuế thu nhập cá nhân mới có hiệu lực giữa năm 2026, cần xem lại mức và cách tính.",
+    "questions": "Công ty có chia lợi nhuận trong năm không? Đã khấu trừ và kê khai chưa?",
+    "frequency": "Khi chia lợi nhuận",
+    "reference": "Luật Thuế thu nhập cá nhân năm 2025 và nghị định hướng dẫn",
+    "assignee": "Kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 27,
+    "group": "Thuế",
+    "title": "Giao dịch với công ty liên quan",
+    "risk": "Cao",
+    "consequences": "Không kê khai phụ lục là phạt riêng; cơ quan thuế được ấn định giá giao dịch, điều chỉnh tăng thu nhập chịu thuế, loại chi phí lãi vay vượt trần. Truy thu thường lớn và kéo dài nhiều năm.",
+    "whyCare": "Chủ sở hữu có từ hai công ty trở lên, giữa các công ty có mua bán dịch vụ, cho vay, dùng chung nhân sự hay văn phòng, thì đó là giao dịch liên kết. Phải kê khai phụ lục kèm quyết toán, có thể phải lập hồ sơ xác định giá, và chi phí lãi vay bị khống chế. Ít công ty nhỏ biết mình thuộc diện này.",
+    "questions": "Công ty có giao dịch với công ty nào cùng chủ sở hữu, cùng người điều hành không? Đã kê khai phụ lục giao dịch liên kết chưa?",
+    "frequency": "Cùng kỳ quyết toán năm",
+    "reference": "Nghị định về quản lý thuế đối với doanh nghiệp có giao dịch liên kết",
+    "assignee": "Kế toán, tư vấn thuế",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 28,
+    "group": "Thuế",
+    "title": "Thuế suất thuế giá trị gia tăng cho từng sản phẩm, dịch vụ",
+    "risk": "Cao",
+    "consequences": "Áp sai một mã sản phẩm là sai hàng loạt hoá đơn nhiều kỳ: truy thu thuế đầu ra cộng phạt 20%, phải điều chỉnh hoá đơn với từng khách hàng.",
+    "whyCare": "Một công ty có thể bán nhiều thứ chịu thuế suất khác nhau: phần mềm thuộc nhóm không chịu thuế, thiết bị chịu thuế suất phổ thông, dịch vụ cho khách nước ngoài có thể được 0% nhưng điều kiện đã siết lại từ luật mới, một số nhóm còn được giảm thuế suất tạm thời theo nghị quyết từng năm. Áp sai một nhóm là sai cả chuỗi hoá đơn, kê khai và khấu trừ đầu vào.",
+    "questions": "Đã lập bảng thuế suất cho từng mã sản phẩm, dịch vụ đang bán chưa? Hàng bán kèm dịch vụ (thiết bị đi kèm phần mềm) đang tách hay gộp thuế suất? Có khoản nào đang áp 0% cho khách nước ngoài không, có đủ điều kiện không?",
+    "frequency": "Lập một lần, rà khi thêm sản phẩm hoặc khi có chính sách giảm thuế mới",
+    "reference": "Luật Thuế giá trị gia tăng năm 2024 và nghị định hướng dẫn, các điều về đối tượng không chịu thuế và thuế suất; nghị quyết giảm thuế giá trị gia tăng hiện hành nếu có",
+    "assignee": "Kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 29,
+    "group": "Thuế",
+    "title": "Ưu đãi, miễn giảm thuế thu nhập doanh nghiệp",
+    "risk": "Cao",
+    "consequences": "Bỏ lỡ ưu đãi là nộp thừa nhiều năm không lấy lại được hết. Áp ưu đãi khi không đủ điều kiện là truy thu toàn bộ số thuế được miễn cộng phạt và chậm nộp.",
+    "whyCare": "Có nhiều diện ưu đãi mà công ty nhỏ hay bỏ lỡ hoặc áp sai: ưu đãi cho sản xuất sản phẩm phần mềm, ưu đãi cho doanh nghiệp nhỏ và vừa mới thành lập, ưu đãi cho doanh nghiệp khởi nghiệp sáng tạo theo nghị quyết năm 2025, chuyển lỗ sang các năm sau. Mỗi diện có điều kiện riêng về ngành, hồ sơ, thời gian, và có diện không được cộng dồn với nhau.",
+    "questions": "Công ty có thuộc diện ưu đãi nào không? Đã xác định năm bắt đầu tính ưu đãi chưa? Có hồ sơ chứng minh đủ điều kiện (ví dụ xác nhận sản phẩm phần mềm) không? Lỗ các năm trước đã đăng ký chuyển chưa?",
+    "frequency": "Xác định một lần, rà lại mỗi kỳ quyết toán",
+    "reference": "Luật Thuế thu nhập doanh nghiệp năm 2025 và nghị định hướng dẫn, các điều về ưu đãi thuế suất, miễn giảm, chuyển lỗ; nghị quyết của Quốc hội về phát triển kinh tế tư nhân năm 2025",
+    "assignee": "Kế toán, tư vấn thuế",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 30,
+    "group": "Thuế",
+    "title": "Hồ sơ chứng minh hoạt động sản xuất sản phẩm phần mềm",
+    "risk": "Cao",
+    "consequences": "Không chứng minh được thì mất toàn bộ ưu đãi thuế cho phần mềm của cả giai đoạn, truy thu số thuế đã miễn cộng phạt 20% và chậm nộp tính từ nhiều năm trước.",
+    "whyCare": "Muốn hưởng ưu đãi thuế cho phần mềm thì phải chứng minh công ty thật sự sản xuất phần mềm theo quy trình 7 công đoạn: xác định yêu cầu; phân tích và thiết kế; lập trình viết mã; kiểm tra thử nghiệm; hoàn thiện đóng gói; cài đặt, chuyển giao, bảo hành bảo trì; phát hành phân phối. Điều kiện tối thiểu là thực hiện ít nhất một trong hai công đoạn đầu và có tài liệu cho từng công đoạn đã làm. Doanh nghiệp tự xác định, tự chịu trách nhiệm và gửi thông tin về bộ quản lý ngành để tổng hợp. Đội kỹ thuật thường có đủ tài liệu nhưng nằm rải rác, không ai gom theo đúng khung này, đến khi bị kiểm tra mới lục lại.",
+    "questions": "Ai đang giữ hồ sơ theo 7 công đoạn cho từng sản phẩm phần mềm? Tài liệu yêu cầu, thiết kế, kế hoạch kiểm thử, biên bản bàn giao có lưu theo sản phẩm không? Đã gửi thông tin về bộ quản lý ngành chưa?",
+    "frequency": "Lập cho từng sản phẩm, cập nhật khi có phiên bản lớn",
+    "reference": "Thông tư của Bộ Thông tin và Truyền thông năm 2020 về xác định hoạt động sản xuất sản phẩm phần mềm đáp ứng quy trình (kiểm tra văn bản thay thế sau khi bộ sáp nhập); Luật Thuế thu nhập doanh nghiệp năm 2025 phần ưu đãi",
+    "assignee": "Kỹ thuật, kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 31,
+    "group": "Thuế",
+    "title": "Hạch toán riêng thu nhập được ưu đãi và không được ưu đãi",
+    "risk": "Trung bình",
+    "consequences": "Cơ quan thuế phân bổ lại theo tỉ lệ doanh thu, thường đẩy lợi nhuận từ hoạt động ưu đãi sang hoạt động chịu thuế thường, truy thu phần chênh cộng phạt.",
+    "whyCare": "Công ty phần mềm được ưu đãi nhưng có bán thêm thiết bị, dịch vụ tư vấn, cho thuê... thì phần thu nhập đó không được hưởng ưu đãi của phần mềm. Phải tách doanh thu, chi phí, thu nhập riêng cho từng hoạt động. Không tách được thì cơ quan thuế phân bổ theo tỉ lệ doanh thu, thường bất lợi hơn.",
+    "questions": "Sổ kế toán có tách doanh thu và chi phí theo từng hoạt động không? Chi phí chung (lương quản lý, văn phòng) đang phân bổ theo tiêu thức nào?",
+    "frequency": "Thiết lập một lần trong hệ thống kế toán",
+    "reference": "Luật Thuế thu nhập doanh nghiệp năm 2025 và nghị định hướng dẫn, điều về điều kiện áp dụng ưu đãi; thông tư hướng dẫn về hạch toán riêng thu nhập ưu đãi",
+    "assignee": "Kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 32,
+    "group": "Thuế",
+    "title": "Rà chi phí được trừ và lập danh sách khoản bị loại",
+    "risk": "Cao",
+    "consequences": "Chi phí bị loại khi kiểm tra là khai thiếu thuế: truy thu cộng phạt 20% và chậm nộp trên toàn bộ phần bị loại, tính cho nhiều năm trong thời hiệu.",
+    "whyCare": "Chi phí có thật, có trả tiền, không đồng nghĩa với chi phí được trừ khi tính thuế thu nhập doanh nghiệp. Phải đủ 3 điều kiện: phục vụ kinh doanh, có hoá đơn chứng từ hợp lệ, thanh toán không dùng tiền mặt trên ngưỡng. Kế toán thường chỉ hạch toán mà không phân loại, đến quyết toán mới gạt đại hoặc gạt thiếu. Dấu hiệu đáng lo: chỉ tiêu chi phí không được trừ trên tờ khai quyết toán bằng 0 nhiều năm liên tiếp. Luật mới từ kỳ tính thuế 2025 có thay đổi danh mục, thêm khoản được trừ (chi nghiên cứu phát triển, chuyển đổi số) và sửa một số khống chế.",
+    "questions": "Có danh sách bằng văn bản các khoản chi bị loại năm gần nhất kèm lý do không? Chỉ tiêu chi phí không được trừ trên tờ khai quyết toán các năm là bao nhiêu? Kế toán có rà theo quý hay chỉ làm lúc quyết toán?",
+    "frequency": "Rà từng quý; lập danh sách khi quyết toán năm",
+    "reference": "Luật Thuế thu nhập doanh nghiệp năm 2025, điều về các khoản chi được trừ và không được trừ; nghị định hướng dẫn năm 2025",
+    "assignee": "Kế toán, tư vấn thuế",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 33,
+    "group": "Thuế",
+    "title": "Đối chiếu 12 khoản chi hay bị loại khi quyết toán",
+    "risk": "Cao",
+    "consequences": "Mỗi khoản bị loại là khai thiếu thuế thu nhập doanh nghiệp: truy thu 20% giá trị khoản chi (theo thuế suất) cộng phạt 20% số thiếu cộng chậm nộp 0,03% mỗi ngày. Các khoản này lặp lại hằng tháng nên số truy thu tích luỹ nhiều năm thường lớn hơn dự tính.",
+    "whyCare": "Đây là những khoản gần như công ty nhỏ nào cũng có và gần như lần kiểm tra nào cũng bị hỏi: (1) dịch vụ nước ngoài trả bằng thẻ, không hoá đơn, chưa nộp thuế nhà thầu thay; (2) chi phí do giám đốc hoặc nhân viên trả bằng thẻ cá nhân mà không có quy chế uỷ quyền và chứng từ hoàn ứng; (3) thuê nhà, thuê xe của cá nhân không có hợp đồng, không chứng từ thanh toán, không kê khai nộp thuế thay khi vượt ngưỡng; (4) chi từ 5 triệu trả tiền mặt; (5) phúc lợi trực tiếp cho nhân viên (du lịch, sinh nhật, hiếu hỉ) vượt mức khống chế theo lương bình quân; (6) trang phục chi bằng tiền vượt mức; (7) lãi vay của cá nhân vượt mức trần, hoặc lãi vay tương ứng phần vốn điều lệ chưa góp đủ; (8) khấu hao tài sản không có hoá đơn, không đứng tên công ty, xe dưới 9 chỗ phần giá vượt ngưỡng; (9) tiền phạt vi phạm hành chính, tiền chậm nộp thuế; (10) lương, thưởng chưa chi đến hạn nộp quyết toán, thưởng ngoài quy chế; (11) mua hàng của cá nhân không có hoá đơn mà không lập bảng kê theo mẫu; (12) chi không có hoá đơn, chỉ có phiếu chi nội bộ. Mỗi khoản đều có cách xử lý đúng nếu làm từ đầu; làm sau thì phần lớn không cứu được.",
+    "questions": "Đi từng khoản trong 12 khoản, công ty có khoản nào không? Khoản đó đang được hạch toán là chi phí được trừ hay đã tự loại? Với khoản còn cứu được (bổ sung hợp đồng, quy chế, chứng từ hoàn ứng, kê khai thuế thay), đã làm chưa?",
+    "frequency": "Rà từng quý",
+    "reference": "Nghị định hướng dẫn Luật Thuế thu nhập doanh nghiệp năm 2025, điều về các khoản chi không được trừ; thông tư hướng dẫn về chi phí được trừ còn hiệu lực",
+    "assignee": "Kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 34,
+    "group": "Thuế",
+    "title": "Rà thuế giá trị gia tăng đầu vào được khấu trừ",
+    "risk": "Cao",
+    "consequences": "Khấu trừ thừa là truy thu đúng số đã khấu trừ sai cộng phạt 20% và chậm nộp. Với công ty có hoạt động không chịu thuế mà khấu trừ toàn bộ đầu vào, số truy thu thường lớn.",
+    "whyCare": "Không phải hoá đơn đầu vào nào cũng khấu trừ được. Không khấu trừ khi: đầu vào phục vụ hoạt động không chịu thuế (ví dụ công ty bán phần mềm thuộc nhóm không chịu thuế thì đầu vào dùng riêng cho phần mềm không được khấu trừ, đầu vào dùng chung phải phân bổ theo tỉ lệ doanh thu), thiếu chứng từ thanh toán không dùng tiền mặt, hoá đơn từ doanh nghiệp bỏ trốn hoặc rủi ro, hoá đơn sai tên hay mã số thuế người mua, xe ô tô dưới 9 chỗ phần giá vượt ngưỡng, dịch vụ nước ngoài chưa nộp thuế nhà thầu thay. Phần không được khấu trừ có thể tính vào chi phí nếu đủ điều kiện, nhưng phải tách ra đúng.",
+    "questions": "Công ty có hoạt động không chịu thuế giá trị gia tăng không? Nếu có, đầu vào dùng chung đang phân bổ theo tỉ lệ nào, tính lại cuối năm chưa? Có danh sách hoá đơn đầu vào không được khấu trừ kèm lý do không? Phần không được khấu trừ đã chuyển sang chi phí đúng cách chưa?",
+    "frequency": "Rà theo kỳ khai thuế; tính lại tỉ lệ phân bổ cuối năm",
+    "reference": "Luật Thuế giá trị gia tăng năm 2024 và nghị định hướng dẫn, các điều về khấu trừ thuế đầu vào và phân bổ",
+    "assignee": "Kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 35,
+    "group": "Thuế",
+    "title": "Thời hiệu xử phạt và thời hạn truy thu",
+    "risk": "Trung bình",
+    "consequences": "Không phải mục có phạt riêng, mà là công cụ để xếp ưu tiên. Hiểu sai thời hiệu theo hướng 'qua 2 năm là xong' dẫn đến bỏ qua khoản thuế thiếu vẫn bị truy thu tới 10 năm kèm chậm nộp; hiểu đúng thì chủ động khai bổ sung để tránh phạt 20%.",
+    "whyCare": "Hết thời hiệu thì không bị phạt nữa, nhưng tiền thuế thiếu và tiền chậm nộp vẫn phải nộp trong thời hạn truy thu dài hơn nhiều. Mức hiện hành: vi phạm về hoá đơn (lập sai thời điểm, sai nội dung, không thông báo sai sót) và vi phạm thủ tục thuế (nộp tờ khai trễ, đăng ký trễ) thời hiệu phạt 2 năm; khai sai dẫn đến thiếu thuế hoặc trốn thuế chưa đến mức hình sự thời hiệu phạt 5 năm; truy thu tiền thuế và chậm nộp 10 năm; không đăng ký thuế thì truy thu không giới hạn. Bảo hiểm xã hội: phạt hành chính có thời hiệu ngắn, nhưng truy thu tiền đóng và lãi không có thời hạn. Lao động: thời hiệu phạt hành chính 1 năm nhưng tranh chấp cá nhân đi đường toà án theo thời hiệu riêng. Kế toán: 2 năm. Biết thời hiệu để xếp ưu tiên xử lý hồ sơ cũ, không phải để chờ hết hạn.",
+    "questions": "Các sai sót cũ đã biết đang nằm trong thời hiệu nào? Có sai sót nào sắp hết thời hiệu phạt mà nên chủ động khai bổ sung để chỉ nộp thuế thiếu và chậm nộp, không bị phạt 20%? Khai bổ sung trước khi có quyết định kiểm tra thì không bị phạt khai sai.",
+    "frequency": "Rà khi phát hiện sai sót cũ; rà toàn bộ trước mỗi kỳ quyết toán",
+    "reference": "Luật Quản lý thuế, điều về thời hiệu xử phạt và thời hạn truy thu; nghị định xử phạt vi phạm hành chính về thuế, hoá đơn và các nghị định sửa đổi (bản sửa đổi có hiệu lực đầu năm 2026); Luật Xử lý vi phạm hành chính",
+    "assignee": "Kế toán, tư vấn thuế",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 36,
+    "group": "Thuế",
+    "title": "Chi phí lương, thưởng được trừ",
+    "risk": "Trung bình",
+    "consequences": "Lương, thưởng không có trong quy chế hoặc không có chứng từ bị loại khỏi chi phí, truy thu thuế thu nhập doanh nghiệp tương ứng cộng phạt.",
+    "whyCare": "Lương, thưởng, phụ cấp chỉ được tính vào chi phí khi được ghi trong hợp đồng, quy chế hoặc thoả ước và có chứng từ thanh toán. Thưởng nóng ngoài quy chế thường bị loại.",
+    "questions": "Quy chế lương, thưởng có bằng văn bản chưa? Các khoản thưởng đang trả có nằm trong quy chế không?",
+    "frequency": "Cập nhật khi thay đổi",
+    "reference": "Thông tư hướng dẫn về chi phí được trừ khi tính thuế thu nhập doanh nghiệp",
+    "assignee": "Kế toán, nhân sự",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 37,
+    "group": "Hoá đơn",
+    "title": "Thời điểm lập hoá đơn",
+    "risk": "Trung bình",
+    "consequences": "Phạt hành chính về hoá đơn, khung với tổ chức khoảng 6-16 triệu cho lập sai thời điểm; nếu dẫn đến chậm nộp thuế thì cộng thêm phạt khai thiếu và chậm nộp.",
+    "whyCare": "Xuất hoá đơn trễ so với thời điểm hoàn thành dịch vụ hoặc thu tiền là lỗi phổ biến nhất và có mức phạt riêng. Quy định về thời điểm lập hoá đơn có điều chỉnh giữa năm 2026.",
+    "questions": "Kế toán đang xuất hoá đơn lúc nào: khi thu tiền, khi hoàn thành dịch vụ, hay cuối tháng? Cách đó có khớp quy định hiện hành không?",
+    "frequency": "Từng giao dịch",
+    "reference": "Nghị định về hoá đơn, chứng từ hiện hành và các nghị định sửa đổi năm 2025, 2026",
+    "assignee": "Kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 38,
+    "group": "Hoá đơn",
+    "title": "Nội dung hoá đơn",
+    "risk": "Thấp",
+    "consequences": "Phạt hành chính nhỏ với người bán; người mua không được khấu trừ, phải xử lý điều chỉnh, ảnh hưởng quan hệ khách hàng nhiều hơn tiền phạt.",
+    "whyCare": "Sai mã số thuế người mua, sai thuế suất, thiếu nội dung bắt buộc thì bên mua không được khấu trừ, bên bán phải làm thủ tục điều chỉnh. Tốn thời gian cả hai bên.",
+    "questions": "Có quy trình kiểm tra thông tin người mua trước khi xuất không? Tỉ lệ hoá đơn phải điều chỉnh, thay thế trong năm là bao nhiêu?",
+    "frequency": "Từng giao dịch",
+    "reference": "Nghị định về hoá đơn, chứng từ, điều về nội dung hoá đơn",
+    "assignee": "Kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 39,
+    "group": "Hoá đơn",
+    "title": "Xử lý hoá đơn sai sót: điều chỉnh, thay thế, huỷ",
+    "risk": "Trung bình",
+    "consequences": "Phạt hành chính cho từng hành vi sai quy trình hoặc không thông báo sai sót; hoá đơn huỷ sai cách bị coi là không lập hoá đơn, khung phạt cao hơn.",
+    "whyCare": "Hoá đơn đã gửi cơ quan thuế thì không sửa trực tiếp được. Tuỳ loại sai (chưa gửi người mua, sai thông tin không ảnh hưởng tiền, sai tiền hoặc thuế suất) mà xử lý bằng huỷ, điều chỉnh hay thay thế, và phải có thông báo sai sót gửi cơ quan thuế theo mẫu. Làm sai cách hoặc quên thông báo là bị phạt dù hoá đơn cuối cùng đã đúng.",
+    "questions": "Kế toán có quy trình bằng văn bản cho từng loại sai sót không? Số hoá đơn phải điều chỉnh, thay thế trong năm là bao nhiêu, nguyên nhân chính là gì?",
+    "frequency": "Khi phát sinh",
+    "reference": "Nghị định về hoá đơn, chứng từ và các nghị định sửa đổi, điều về xử lý hoá đơn có sai sót",
+    "assignee": "Kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 40,
+    "group": "Hoá đơn",
+    "title": "Hoá đơn từ máy tính tiền",
+    "risk": "Trung bình",
+    "consequences": "Nếu thuộc diện bắt buộc mà không dùng, bị coi là không lập hoá đơn đúng quy định, phạt theo từng hành vi, khung với tổ chức khoảng 20-40 triệu.",
+    "whyCare": "Bán hàng, dịch vụ trực tiếp cho người tiêu dùng thuộc một số nhóm ngành phải dùng hoá đơn điện tử từ máy tính tiền kết nối cơ quan thuế.",
+    "questions": "Công ty có bán trực tiếp cho người tiêu dùng không? Có thuộc nhóm ngành bắt buộc không?",
+    "frequency": "Kiểm tra một lần",
+    "reference": "Nghị định về hoá đơn, chứng từ sửa đổi năm 2025",
+    "assignee": "Kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 41,
+    "group": "Hoá đơn",
+    "title": "Đối soát hoá đơn đầu vào",
+    "risk": "Cao",
+    "consequences": "Hoá đơn từ doanh nghiệp bỏ trốn bị loại chi phí và bác khấu trừ, truy thu cộng phạt; số lượng nhiều có thể bị điều tra mua bán hoá đơn, trách nhiệm hình sự.",
+    "whyCare": "Nhận hoá đơn từ doanh nghiệp bỏ trốn, doanh nghiệp rủi ro cao là bị loại chi phí và có thể bị xem là mua bán hoá đơn. Cơ quan thuế có công cụ tra cứu công khai.",
+    "questions": "Kế toán có tra cứu tình trạng nhà cung cấp trước khi hạch toán hoá đơn lớn không?",
+    "frequency": "Hằng tháng",
+    "reference": "Cổng hoá đơn điện tử của cơ quan thuế; danh sách doanh nghiệp rủi ro",
+    "assignee": "Kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 42,
+    "group": "Lao động",
+    "title": "Hình thức và loại hợp đồng lao động",
+    "risk": "Cao",
+    "consequences": "Không có hợp đồng bằng văn bản: phạt theo số người, khung với tổ chức từ khoảng 4 đến 50 triệu. Ký sai loại: khi tranh chấp toà coi là hợp đồng không xác định thời hạn, chi phí chấm dứt cao hơn nhiều.",
+    "whyCare": "Người làm việc có trả lương và chịu sự quản lý là quan hệ lao động, dù gọi bằng tên khác. Hợp đồng xác định thời hạn chỉ được ký một số lần nhất định rồi phải chuyển sang không xác định thời hạn, và không được kéo dài bằng phụ lục.",
+    "questions": "Có ai đang làm việc mà chưa có hợp đồng bằng văn bản không? Có hợp đồng nào đã ký xác định thời hạn quá số lần cho phép không?",
+    "frequency": "Từng người, theo lịch hết hạn",
+    "reference": "Bộ luật Lao động, các điều về giao kết, loại hợp đồng, phụ lục",
+    "assignee": "Nhân sự",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 43,
+    "group": "Lao động",
+    "title": "Thử việc",
+    "risk": "Thấp",
+    "consequences": "Phạt hành chính, khung với tổ chức khoảng 4-10 triệu, buộc trả đủ lương cho thời gian thử việc vượt quy định hoặc trả dưới mức tối thiểu.",
+    "whyCare": "Thời gian thử việc có giới hạn theo tính chất công việc, lương thử việc có mức tối thiểu. Thử việc quá dài hoặc thử việc nhiều lần cùng một vị trí là vi phạm.",
+    "questions": "Thời gian thử việc từng vị trí đang áp dụng là bao lâu? Lương thử việc bằng bao nhiêu phần trăm lương chính thức?",
+    "frequency": "Từng người",
+    "reference": "Bộ luật Lao động, điều về thử việc",
+    "assignee": "Nhân sự",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 44,
+    "group": "Lao động",
+    "title": "Điều khoản sở hữu trí tuệ và bảo mật trong hợp đồng",
+    "risk": "Cao",
+    "consequences": "Không phạt hành chính, nhưng khi nhân viên nghỉ mang theo mã nguồn, dữ liệu, khách hàng, công ty không có căn cứ rõ để đòi hoặc ngăn chặn. Với công ty công nghệ đây là rủi ro sống còn.",
+    "whyCare": "Với công ty công nghệ, sản phẩm nhân viên làm ra là tài sản lớn nhất. Luật có quy định về tác phẩm tạo ra theo nhiệm vụ, nhưng ghi rõ trong hợp đồng thì đỡ tranh chấp về sau. Bảo mật thông tin và bí mật kinh doanh cũng nên có điều khoản riêng.",
+    "questions": "Hợp đồng lao động hiện tại có điều khoản về quyền sở hữu sản phẩm công việc và bảo mật không?",
+    "frequency": "Mọi hợp đồng",
+    "reference": "Bộ luật Lao động, điều về nội dung hợp đồng; Luật Sở hữu trí tuệ",
+    "assignee": "Nhân sự, pháp chế",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 45,
+    "group": "Lao động",
+    "title": "Sổ quản lý lao động và khai trình",
+    "risk": "Thấp",
+    "consequences": "Phạt hành chính, khung với tổ chức khoảng 2-6 triệu cho sổ quản lý lao động và khoảng 10-20 triệu cho không khai trình.",
+    "whyCare": "Doanh nghiệp phải lập sổ quản lý lao động và khai trình việc sử dụng lao động khi bắt đầu hoạt động. Ít công ty nhỏ biết đến hai nghĩa vụ này cho tới khi bị kiểm tra.",
+    "questions": "Có sổ quản lý lao động không, dạng giấy hay điện tử? Đã khai trình khi bắt đầu hoạt động chưa?",
+    "frequency": "Lập một lần, cập nhật liên tục",
+    "reference": "Bộ luật Lao động; nghị định hướng dẫn về quản lý lao động",
+    "assignee": "Nhân sự",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 46,
+    "group": "Lao động",
+    "title": "Báo cáo tình hình sử dụng lao động định kỳ",
+    "risk": "Thấp",
+    "consequences": "Phạt hành chính, khung với tổ chức khoảng 10-20 triệu cho mỗi kỳ không báo cáo.",
+    "whyCare": "Báo cáo này nộp nhiều lần trong năm, không phải một lần. Cơ quan tiếp nhận đã thay đổi sau sắp xếp bộ máy năm 2025, nộp qua cổng dịch vụ công.",
+    "questions": "Kỳ báo cáo gần nhất đã nộp chưa? Nộp cho cơ quan nào, qua kênh nào?",
+    "frequency": "Định kỳ trong năm theo quy định",
+    "reference": "Nghị định hướng dẫn Bộ luật Lao động về báo cáo sử dụng lao động, bản sửa đổi năm 2025",
+    "assignee": "Nhân sự",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 47,
+    "group": "Lao động",
+    "title": "Nội quy lao động",
+    "risk": "Trung bình",
+    "consequences": "Phạt hành chính, khung với tổ chức khoảng 10-20 triệu. Rủi ro lớn hơn: kỷ luật, sa thải không dựa trên nội quy đã đăng ký là trái luật, phải nhận lại và bồi thường.",
+    "whyCare": "Từ một số lượng lao động nhất định, nội quy phải bằng văn bản và phải đăng ký với cơ quan quản lý lao động. Không có nội quy đã đăng ký thì gần như không xử lý kỷ luật được ai một cách hợp pháp.",
+    "questions": "Công ty có nội quy bằng văn bản chưa? Đã đăng ký chưa? Số lao động hiện tại đã đến mức bắt buộc chưa?",
+    "frequency": "Một lần, đăng ký lại khi sửa",
+    "reference": "Bộ luật Lao động, các điều về nội quy lao động",
+    "assignee": "Nhân sự",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 48,
+    "group": "Lao động",
+    "title": "Thang lương, bảng lương",
+    "risk": "Thấp",
+    "consequences": "Phạt hành chính, khung với tổ chức khoảng 10-20 triệu. Không có thang bảng lương thì mức lương đóng bảo hiểm thiếu căn cứ khi bị kiểm tra.",
+    "whyCare": "Không còn phải nộp cho cơ quan nhà nước, nhưng vẫn phải xây dựng, tham khảo ý kiến tổ chức đại diện người lao động nếu có, và công khai tại nơi làm việc. Đây cũng là căn cứ để mức lương đóng bảo hiểm có cơ sở.",
+    "questions": "Có thang bảng lương bằng văn bản chưa? Đã công khai chưa? Mức lương thấp nhất trong thang có cao hơn lương tối thiểu vùng hiện hành không?",
+    "frequency": "Cập nhật khi thay đổi",
+    "reference": "Bộ luật Lao động, điều về xây dựng thang lương; nghị định về lương tối thiểu vùng hiện hành",
+    "assignee": "Nhân sự",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 49,
+    "group": "Lao động",
+    "title": "Quy chế dân chủ và đối thoại tại nơi làm việc",
+    "risk": "Thấp",
+    "consequences": "Phạt hành chính, khung với tổ chức khoảng 10-20 triệu. Ít bị kiểm tra riêng, thường bị hỏi kèm khi có khiếu nại lao động.",
+    "whyCare": "Từ một số lượng lao động nhất định, công ty phải có quy chế dân chủ ở cơ sở và tổ chức đối thoại định kỳ có biên bản. Ít công ty làm, nhưng đây là mục kiểm tra lao động hay hỏi.",
+    "questions": "Có quy chế dân chủ chưa? Lần đối thoại định kỳ gần nhất là khi nào, có biên bản không?",
+    "frequency": "Định kỳ hằng năm",
+    "reference": "Bộ luật Lao động; nghị định hướng dẫn về đối thoại tại nơi làm việc",
+    "assignee": "Nhân sự",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 50,
+    "group": "Lao động",
+    "title": "Nghỉ phép năm",
+    "risk": "Thấp",
+    "consequences": "Phải thanh toán phép chưa nghỉ khi chấm dứt; tranh chấp phát sinh lúc nghỉ việc; phạt hành chính nếu không cho nghỉ hoặc không trả.",
+    "whyCare": "Phép năm tăng theo thâm niên. Khi chấm dứt hợp đồng, phép chưa nghỉ phải được thanh toán. Không theo dõi phép là dễ phát sinh tranh chấp lúc nghỉ việc.",
+    "questions": "Có bảng theo dõi phép từng người không? Cách tính ngày phép theo thâm niên đã đúng chưa?",
+    "frequency": "Hằng năm",
+    "reference": "Bộ luật Lao động, các điều về nghỉ hằng năm",
+    "assignee": "Nhân sự",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 51,
+    "group": "Lao động",
+    "title": "Chấm dứt hợp đồng lao động",
+    "risk": "Cao",
+    "consequences": "Chấm dứt trái luật: nhận lại người lao động, trả lương và bảo hiểm cho toàn bộ thời gian không làm việc, cộng ít nhất 2 tháng lương; không nhận lại thì thêm ít nhất 2 tháng nữa. Kiện tụng kéo dài.",
+    "whyCare": "Đây là điểm phát sinh kiện tụng nhiều nhất. Thời hạn báo trước, các khoản phải thanh toán, thời hạn thanh toán, trợ cấp thôi việc cho giai đoạn không đóng bảo hiểm thất nghiệp, đều có quy định cụ thể.",
+    "questions": "Có quy trình chấm dứt hợp đồng bằng văn bản không? Lần nghỉ việc gần nhất có thanh toán đủ, đúng hạn không?",
+    "frequency": "Từng trường hợp",
+    "reference": "Bộ luật Lao động, các điều về chấm dứt hợp đồng và trách nhiệm khi chấm dứt",
+    "assignee": "Nhân sự",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 52,
+    "group": "Lao động",
+    "title": "Người lao động nước ngoài",
+    "risk": "Cao",
+    "consequences": "Phạt với tổ chức khoảng 60-150 triệu theo số người; người lao động bị trục xuất; hợp đồng có thể bị vô hiệu.",
+    "whyCare": "Thuê người nước ngoài phải có giấy phép lao động hoặc xác nhận miễn, và có báo cáo riêng. Làm việc từ xa cho công ty Việt Nam cũng cần xem xét.",
+    "questions": "Công ty có thuê người nước ngoài không, kể cả làm từ xa? Giấy phép còn hạn không?",
+    "frequency": "Theo hạn giấy phép",
+    "reference": "Nghị định về người lao động nước ngoài làm việc tại Việt Nam",
+    "assignee": "Nhân sự",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 53,
+    "group": "Lao động",
+    "title": "Tổ chức đại diện người lao động",
+    "risk": "Thấp",
+    "consequences": "Cản trở thành lập công đoàn bị phạt và có thể bị kiện. Hiểu sai thành nghĩa vụ phải lập thì không bị phạt, chỉ tốn công.",
+    "whyCare": "Việc thành lập công đoàn cơ sở là quyền của người lao động, không phải nghĩa vụ của công ty. Nhưng công ty không được cản trở và phải tạo điều kiện khi họ muốn lập. Kinh phí công đoàn thì công ty phải đóng dù có công đoàn cơ sở hay không, xem mục bảo hiểm.",
+    "questions": "Người lao động có đề nghị lập công đoàn không? Công ty đã hiểu đúng đây là quyền của họ chưa?",
+    "frequency": "Khi phát sinh",
+    "reference": "Luật Công đoàn năm 2024",
+    "assignee": "Nhân sự",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 54,
+    "group": "An toàn vệ sinh lao động",
+    "title": "Khám sức khoẻ định kỳ",
+    "risk": "Trung bình",
+    "consequences": "Phạt theo số người không được khám, khung với tổ chức từ khoảng 2 đến 150 triệu tuỳ số lượng. Khi có tai nạn hoặc bệnh nghề nghiệp, thiếu hồ sơ khám là bất lợi lớn.",
+    "whyCare": "Bắt buộc với mọi người lao động, tần suất tối thiểu theo luật. Công ty văn phòng hay bỏ qua vì nghĩ chỉ áp dụng cho nhà máy.",
+    "questions": "Lần khám sức khoẻ tập thể gần nhất là khi nào? Có hồ sơ lưu không?",
+    "frequency": "Định kỳ hằng năm",
+    "reference": "Luật An toàn, vệ sinh lao động, điều về khám sức khoẻ",
+    "assignee": "Nhân sự",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 55,
+    "group": "An toàn vệ sinh lao động",
+    "title": "Huấn luyện an toàn, vệ sinh lao động",
+    "risk": "Trung bình",
+    "consequences": "Phạt theo số người chưa huấn luyện, khung với tổ chức từ khoảng 10 đến 140 triệu. Khi có tai nạn lao động, không có hồ sơ huấn luyện làm tăng trách nhiệm của công ty.",
+    "whyCare": "Người lao động phải được huấn luyện theo nhóm. Nhân viên văn phòng, công nghệ thông tin thuộc nhóm công ty tự tổ chức được, nhưng vẫn phải có hồ sơ chứng minh đã huấn luyện.",
+    "questions": "Nhân viên mới có được huấn luyện không? Có hồ sơ, danh sách ký tên không?",
+    "frequency": "Lần đầu và định kỳ theo quy định",
+    "reference": "Nghị định hướng dẫn Luật An toàn, vệ sinh lao động về huấn luyện",
+    "assignee": "Nhân sự",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 56,
+    "group": "An toàn vệ sinh lao động",
+    "title": "Người phụ trách và báo cáo định kỳ",
+    "risk": "Thấp",
+    "consequences": "Phạt hành chính, khung với tổ chức khoảng 4-20 triệu cho không phân công hoặc không báo cáo.",
+    "whyCare": "Phải phân công người làm công tác an toàn, vệ sinh lao động và nộp báo cáo định kỳ, kể cả báo cáo tai nạn lao động khi không có tai nạn nào.",
+    "questions": "Ai được phân công phụ trách? Báo cáo kỳ gần nhất đã nộp chưa?",
+    "frequency": "Định kỳ trong năm",
+    "reference": "Luật An toàn, vệ sinh lao động; nghị định hướng dẫn về báo cáo",
+    "assignee": "Nhân sự",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 57,
+    "group": "An toàn vệ sinh lao động",
+    "title": "Phòng cháy chữa cháy tại nơi làm việc",
+    "risk": "Trung bình",
+    "consequences": "Phạt hành chính, có thể bị tạm đình chỉ hoạt động; khi có cháy, thiếu hồ sơ và phương án là căn cứ quy trách nhiệm cho người đứng đầu.",
+    "whyCare": "Văn phòng thuê trong toà nhà vẫn phải có nội quy, phương án, thiết bị và phân định trách nhiệm với chủ toà nhà. Luật mới có hiệu lực năm 2025.",
+    "questions": "Hợp đồng thuê văn phòng có ghi rõ trách nhiệm phòng cháy của từng bên không? Công ty có hồ sơ phòng cháy riêng không?",
+    "frequency": "Kiểm tra hằng năm",
+    "reference": "Luật Phòng cháy, chữa cháy và cứu nạn, cứu hộ năm 2024",
+    "assignee": "Hành chính",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 58,
+    "group": "Bảo hiểm, công đoàn",
+    "title": "Đối tượng phải tham gia bảo hiểm bắt buộc",
+    "risk": "Cao",
+    "consequences": "Truy thu toàn bộ số tiền chưa đóng cộng lãi 0,03% mỗi ngày; phạt 12-15% số tiền trốn đóng, tối đa 75 triệu; trốn đóng số lớn có thể bị xử lý hình sự.",
+    "whyCare": "Hợp đồng từ một tháng trở lên đã thuộc diện đóng, không phải đợi đủ ba tháng như nhiều người nghĩ. Thoả thuận đặt tên khác nhưng có trả lương và có quản lý điều hành cũng bị xem là hợp đồng lao động.",
+    "questions": "Có ai đang làm việc mà chưa được đóng bảo hiểm không? Lý do là gì, có đúng luật không?",
+    "frequency": "Liên tục",
+    "reference": "Luật Bảo hiểm xã hội năm 2024, điều về đối tượng tham gia",
+    "assignee": "Nhân sự",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 59,
+    "group": "Bảo hiểm, công đoàn",
+    "title": "Người quản lý doanh nghiệp không hưởng lương",
+    "risk": "Trung bình",
+    "consequences": "Truy thu tiền đóng từ 01/7/2025 cộng lãi chậm đóng; phạt như trốn đóng. Số tiền không lớn nhưng dễ bị phát hiện vì đối chiếu với đăng ký doanh nghiệp.",
+    "whyCare": "Từ giữa năm 2025, giám đốc, chủ công ty, thành viên hội đồng quản trị không nhận lương vẫn thuộc diện đóng bảo hiểm bắt buộc, tự đóng trên mức tự chọn trong khung quy định. Đây là điểm mới mà nhiều founder chưa biết, trước đây không nhận lương là không phải đóng.",
+    "questions": "Người quản lý công ty có nhận lương không? Nếu không, đã đăng ký đóng bảo hiểm theo diện này chưa?",
+    "frequency": "Hằng tháng hoặc theo kỳ đã chọn",
+    "reference": "Luật Bảo hiểm xã hội năm 2024 và nghị định hướng dẫn, phần người quản lý không hưởng lương",
+    "assignee": "Nhân sự, kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 60,
+    "group": "Bảo hiểm, công đoàn",
+    "title": "Thời hạn đăng ký và báo tăng, báo giảm",
+    "risk": "Trung bình",
+    "consequences": "Truy thu cộng lãi chậm đóng cho khoảng thời gian báo trễ; phạt hành chính. Báo giảm trễ thì công ty tự chịu tiền đóng cho người đã nghỉ.",
+    "whyCare": "Đăng ký tham gia cho người mới có thời hạn tính từ ngày ký hợp đồng. Báo tăng, báo giảm trễ bị truy thu và tính lãi.",
+    "questions": "Người vào gần nhất đã được báo tăng trong thời hạn chưa? Người nghỉ gần nhất đã báo giảm chưa?",
+    "frequency": "Trong tháng phát sinh",
+    "reference": "Luật Bảo hiểm xã hội năm 2024; quy trình thu của cơ quan bảo hiểm",
+    "assignee": "Nhân sự",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 61,
+    "group": "Bảo hiểm, công đoàn",
+    "title": "Mức lương làm căn cứ đóng và trần đóng",
+    "risk": "Cao",
+    "consequences": "Đóng dưới mức đúng là trốn đóng: truy thu phần chênh cộng lãi và phạt 12-15%; cơ quan bảo hiểm đối chiếu được với dữ liệu thuế nên dễ bị phát hiện hàng loạt.",
+    "whyCare": "Lương đóng bảo hiểm không được thấp hơn lương tối thiểu vùng và có trần theo quy định. Đóng trên mức lương thấp hơn lương thực trả là rủi ro truy thu khi kiểm tra, vì cơ quan bảo hiểm đối chiếu được với dữ liệu thuế.",
+    "questions": "Lương đóng bảo hiểm so với lương thực trả và so với lương tối thiểu vùng hiện hành như thế nào?",
+    "frequency": "Đầu mỗi năm và khi đổi lương",
+    "reference": "Luật Bảo hiểm xã hội năm 2024; nghị định về lương tối thiểu vùng hiện hành",
+    "assignee": "Nhân sự, kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 62,
+    "group": "Bảo hiểm, công đoàn",
+    "title": "Cấu trúc lương: khoản nào tính đóng, khoản nào không",
+    "risk": "Cao",
+    "consequences": "Khoản gọi là hỗ trợ nhưng trả cố định bị coi là lương và truy thu cho toàn bộ nhân viên, toàn bộ thời gian, cộng lãi và phạt. Đây là dạng truy thu bảo hiểm phổ biến nhất.",
+    "whyCare": "Lương làm căn cứ đóng gồm 3 phần: mức lương theo công việc hoặc chức danh, phụ cấp lương gắn với điều kiện làm việc, và khoản bổ sung khác nếu đồng thời xác định được số tiền cụ thể, ghi trong hợp đồng và trả đều mỗi kỳ. Không tính đóng: thưởng, hoa hồng, khoản biến động theo năng suất hay kết quả kinh doanh, và các khoản phúc lợi tách riêng (ăn giữa ca, xăng xe, điện thoại, nhà ở, nuôi con, hiếu hỉ, sinh nhật). Nghĩa là lương cố định phải đóng đủ, phần hoa hồng biến động không phải đóng, nhưng phải ghi rõ và tách rõ trên hợp đồng và bảng lương. Rủi ro lớn nhất: cơ quan bảo hiểm đối chiếu được lương đóng với thu nhập trên quyết toán thuế thu nhập cá nhân; lệch lớn mà không giải thích được bằng quy chế là bị truy thu cả gói.",
+    "questions": "Hợp đồng lao động có tách rõ mức lương, từng loại phụ cấp, khoản bổ sung và khoản phúc lợi thành mục riêng không? Hoa hồng, thưởng hiệu quả có quy chế tính bằng văn bản không? Có khoản nào gọi là 'hỗ trợ' nhưng trả cố định hằng tháng cho mọi người không? Chênh lệch giữa lương đóng bảo hiểm và thu nhập chịu thuế của từng người giải thích được bằng gì?",
+    "frequency": "Rà khi lập hợp đồng, khi đổi lương, và mỗi năm đối chiếu với quyết toán thuế",
+    "reference": "Luật Bảo hiểm xã hội năm 2024, điều về căn cứ đóng; nghị định hướng dẫn năm 2025, điều về tiền lương làm căn cứ đóng; văn bản hướng dẫn của cơ quan quản lý lao động và bảo hiểm",
+    "assignee": "Nhân sự, kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 63,
+    "group": "Bảo hiểm, công đoàn",
+    "title": "Kinh phí công đoàn",
+    "risk": "Trung bình",
+    "consequences": "Truy thu kinh phí chưa đóng cộng lãi; phạt 12-15% số tiền chậm đóng, tối đa 75 triệu với tổ chức.",
+    "whyCare": "Công ty phải nộp kinh phí công đoàn tính trên quỹ lương đóng bảo hiểm, dù đã lập công đoàn cơ sở hay chưa. Chưa lập thì nộp về công đoàn cấp trên. Nghị định mới năm 2026 có bổ sung các trường hợp được miễn, giảm, tạm dừng.",
+    "questions": "Công ty đang nộp kinh phí công đoàn chưa? Nộp cho đơn vị nào? Có thuộc trường hợp miễn, giảm nào không?",
+    "frequency": "Hằng tháng hoặc theo kỳ được thông báo",
+    "reference": "Luật Công đoàn năm 2024; nghị định về tài chính công đoàn năm 2026",
+    "assignee": "Kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 64,
+    "group": "Dữ liệu cá nhân, an toàn thông tin",
+    "title": "Luật Bảo vệ dữ liệu cá nhân",
+    "risk": "Cao",
+    "consequences": "Khung phạt cao nhất trong checklist: một số hành vi phạt tới 5% doanh thu năm trước, các vi phạm khác tới khoảng 3 tỷ với tổ chức; có thể bị đình chỉ xử lý dữ liệu, tức dừng dịch vụ.",
+    "whyCare": "Luật mới có hiệu lực đầu năm 2026, thay nghị định cũ, kèm nghị định hướng dẫn mới. Bất kỳ công ty nào lưu tên, số điện thoại, email khách hàng đều thuộc phạm vi. Mức phạt cao hơn nhiều so với trước.",
+    "questions": "Công ty đang thu và lưu những dữ liệu cá nhân gì, của ai, để làm gì? Đã có ai đọc luật mới chưa?",
+    "frequency": "Một lần, rà lại khi thay đổi",
+    "reference": "Luật Bảo vệ dữ liệu cá nhân năm 2025 và nghị định hướng dẫn năm 2025",
+    "assignee": "Pháp chế, kỹ thuật",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 65,
+    "group": "Dữ liệu cá nhân, an toàn thông tin",
+    "title": "Chính sách quyền riêng tư và cơ chế xin đồng ý",
+    "risk": "Cao",
+    "consequences": "Xử lý dữ liệu không có đồng ý hợp lệ là vi phạm cốt lõi, phạt theo khung của luật; mọi hoạt động tiếp thị dựa trên dữ liệu đó có thể bị buộc dừng.",
+    "whyCare": "Phải công khai mục đích, loại dữ liệu, thời gian lưu, bên thứ ba nhận dữ liệu. Sự đồng ý phải tách bạch và chứng minh được, không gộp vào điều khoản chung.",
+    "questions": "Website, ứng dụng có chính sách quyền riêng tư không? Người dùng đồng ý bằng cách nào, có lưu lại bằng chứng không?",
+    "frequency": "Cập nhật khi thay đổi",
+    "reference": "Luật Bảo vệ dữ liệu cá nhân năm 2025, các điều về đồng ý và thông báo",
+    "assignee": "Pháp chế, kỹ thuật",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 66,
+    "group": "Dữ liệu cá nhân, an toàn thông tin",
+    "title": "Quyền của chủ thể dữ liệu",
+    "risk": "Trung bình",
+    "consequences": "Không đáp ứng yêu cầu xoá, truy cập trong thời hạn là vi phạm có thể bị khiếu nại trực tiếp lên cơ quan quản lý; phạt theo khung của luật.",
+    "whyCare": "Khách hàng có quyền yêu cầu truy cập, sửa, xoá, rút lại đồng ý. Công ty phải xử lý được yêu cầu này trong thời hạn. Nhiều hệ thống không có chức năng xoá dữ liệu người dùng.",
+    "questions": "Nếu một khách hàng yêu cầu xoá toàn bộ dữ liệu, công ty làm được không, trong bao lâu?",
+    "frequency": "Vận hành liên tục",
+    "reference": "Luật Bảo vệ dữ liệu cá nhân năm 2025, các điều về quyền của chủ thể dữ liệu",
+    "assignee": "Kỹ thuật",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 67,
+    "group": "Dữ liệu cá nhân, an toàn thông tin",
+    "title": "Hồ sơ đánh giá tác động xử lý dữ liệu",
+    "risk": "Cao",
+    "consequences": "Nếu thuộc diện bắt buộc mà không có hồ sơ, phạt theo khung của luật và bị yêu cầu dừng xử lý đến khi hoàn thành. Với công ty xử lý dữ liệu tài chính, sức khoẻ, đây là mục đầu tiên bị hỏi.",
+    "whyCare": "Hồ sơ phải lập và gửi cơ quan chuyên trách trong thời hạn kể từ khi bắt đầu xử lý. Doanh nghiệp nhỏ, khởi nghiệp được lựa chọn chưa làm trong một số năm đầu, hộ kinh doanh và doanh nghiệp siêu nhỏ được miễn. Tuy nhiên miễn trừ không áp dụng nếu xử lý dữ liệu nhạy cảm, kinh doanh dịch vụ xử lý dữ liệu, hoặc xử lý dữ liệu của số lượng lớn người.",
+    "questions": "Công ty thuộc diện được miễn trừ hay không? Có xử lý dữ liệu tài chính, sức khoẻ, vị trí không? Số người dùng có dữ liệu là bao nhiêu?",
+    "frequency": "Một lần, cập nhật khi thay đổi",
+    "reference": "Luật Bảo vệ dữ liệu cá nhân năm 2025 và nghị định hướng dẫn, điều về miễn trừ và hồ sơ đánh giá tác động",
+    "assignee": "Pháp chế",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 68,
+    "group": "Dữ liệu cá nhân, an toàn thông tin",
+    "title": "Chuyển dữ liệu cá nhân ra nước ngoài",
+    "risk": "Cao",
+    "consequences": "Chuyển dữ liệu ra nước ngoài không có hồ sơ là hành vi có khung phạt tới 5% doanh thu năm trước; có thể bị buộc dừng chuyển, tức dừng dùng dịch vụ đám mây nước ngoài.",
+    "whyCare": "Ba tình huống đều tính là chuyển ra nước ngoài: đưa dữ liệu đang lưu tại Việt Nam lên máy chủ ngoài Việt Nam kể cả cloud; chuyển cho tổ chức, cá nhân ở nước ngoài; dùng nền tảng đặt ở nước ngoài để xử lý dữ liệu thu thập tại Việt Nam. Nghĩa là dùng cloud vùng nước ngoài, bộ công cụ văn phòng, công cụ trí tuệ nhân tạo, email marketing, phân tích, họp trực tuyến có dữ liệu khách hàng hoặc nhân viên đi qua đều thuộc diện. Phải lập hồ sơ riêng và gửi cơ quan chuyên trách, không nằm trong hồ sơ đánh giá tác động thông thường. Hồ sơ gồm báo cáo đánh giá tác động chuyển dữ liệu xuyên biên giới theo mẫu quy định, hợp đồng hoặc thoả thuận chuyển giao dữ liệu với bên nhận, tài liệu chứng minh chính sách và quy trình bảo vệ dữ liệu, kèm thông báo gửi hồ sơ. Nộp trong 60 ngày kể từ lần chuyển đầu tiên, làm một lần nhưng phải làm thủ tục thay đổi khi đổi bên nhận hoặc đổi loại dữ liệu. Cơ quan chuyên trách phản hồi trong 15 ngày và có quyền yêu cầu dừng chuyển.",
+    "questions": "Đã liệt kê mọi nhà cung cấp nước ngoài đang nhận dữ liệu cá nhân của khách hàng, nhân viên chưa? Hồ sơ đã nộp có khớp danh sách thực tế không, đặc biệt các công cụ trí tuệ nhân tạo và dịch vụ thêm vào sau khi nộp? Có hợp đồng hoặc thoả thuận xử lý dữ liệu với từng bên nhận không? Công ty có thuộc diện miễn trừ không (siêu nhỏ, hộ kinh doanh, trừ khi kinh doanh chính là xử lý dữ liệu, dữ liệu nhạy cảm, số lượng lớn)?",
+    "frequency": "Trước khi chuyển; thủ tục thay đổi khi thêm bên nhận hoặc loại dữ liệu mới",
+    "reference": "Luật Bảo vệ dữ liệu cá nhân năm 2025, điều về chuyển dữ liệu xuyên biên giới; nghị định hướng dẫn năm 2025, các điều về phạm vi chuyển, hồ sơ, thủ tục và miễn trừ; mẫu báo cáo và mẫu thông báo kèm nghị định",
+    "assignee": "Pháp chế, kỹ thuật",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 69,
+    "group": "Dữ liệu cá nhân, an toàn thông tin",
+    "title": "Hợp đồng với bên xử lý dữ liệu",
+    "risk": "Trung bình",
+    "consequences": "Khi nhà cung cấp làm lộ dữ liệu, công ty vẫn chịu trách nhiệm với khách hàng và cơ quan quản lý mà không có căn cứ đòi bên kia.",
+    "whyCare": "Nhà cung cấp máy chủ, đối tác kỹ thuật, đại lý tiếp cận dữ liệu khách hàng thay công ty là bên xử lý dữ liệu. Hợp đồng với họ cần có điều khoản bảo vệ dữ liệu cá nhân.",
+    "questions": "Hợp đồng với các nhà cung cấp có tiếp cận dữ liệu có điều khoản về dữ liệu cá nhân không?",
+    "frequency": "Rà toàn bộ hợp đồng nhà cung cấp",
+    "reference": "Luật Bảo vệ dữ liệu cá nhân năm 2025, điều về bên xử lý",
+    "assignee": "Pháp chế",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 70,
+    "group": "Dữ liệu cá nhân, an toàn thông tin",
+    "title": "Quy trình xử lý sự cố lộ dữ liệu",
+    "risk": "Cao",
+    "consequences": "Không thông báo trong thời hạn khi có sự cố là vi phạm riêng, cộng thêm vi phạm gốc; thiệt hại uy tín và bồi thường dân sự cho khách hàng.",
+    "whyCare": "Khi xảy ra sự cố, công ty phải thông báo cơ quan chuyên trách trong thời hạn quy định. Không có quy trình sẵn thì không kịp.",
+    "questions": "Nếu lộ dữ liệu tối nay, ai làm gì, báo ai, trong bao lâu?",
+    "frequency": "Một lần, diễn tập định kỳ",
+    "reference": "Nghị định hướng dẫn Luật Bảo vệ dữ liệu cá nhân, phần thông báo vi phạm",
+    "assignee": "Kỹ thuật, pháp chế",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 71,
+    "group": "Dữ liệu cá nhân, an toàn thông tin",
+    "title": "Cấp độ an toàn hệ thống thông tin",
+    "risk": "Trung bình",
+    "consequences": "Phạt hành chính về an toàn thông tin; với ngành có yêu cầu riêng (tài chính, thanh toán) thiếu hồ sơ cấp độ ảnh hưởng đến giấy phép và hợp tác với ngân hàng.",
+    "whyCare": "Hệ thống thông tin phải được phân loại cấp độ và có hồ sơ đề xuất cấp độ được phê duyệt, đặc biệt với hệ thống phục vụ nhiều người dùng hoặc ngành có yêu cầu riêng.",
+    "questions": "Hệ thống của công ty đã được xác định cấp độ chưa? Ngành đang làm có yêu cầu riêng về an toàn thông tin không?",
+    "frequency": "Một lần, rà lại khi thay đổi hệ thống",
+    "reference": "Luật An toàn thông tin mạng; nghị định về bảo đảm an toàn hệ thống thông tin theo cấp độ",
+    "assignee": "Kỹ thuật",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 72,
+    "group": "Dữ liệu cá nhân, an toàn thông tin",
+    "title": "Lưu trữ dữ liệu trong nước",
+    "risk": "Trung bình",
+    "consequences": "Nếu thuộc diện mà lưu ở nước ngoài, bị yêu cầu chuyển về trong thời hạn, phạt hành chính, và có thể bị hạn chế cung cấp dịch vụ.",
+    "whyCare": "Một số loại dữ liệu và một số loại dịch vụ thuộc diện phải lưu trữ tại Việt Nam.",
+    "questions": "Công ty có thuộc nhóm dịch vụ phải lưu dữ liệu trong nước không? Dữ liệu đang lưu ở đâu?",
+    "frequency": "Kiểm tra một lần",
+    "reference": "Luật An ninh mạng và nghị định hướng dẫn về lưu trữ dữ liệu",
+    "assignee": "Kỹ thuật, pháp chế",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 73,
+    "group": "Dữ liệu cá nhân, an toàn thông tin",
+    "title": "Nghĩa vụ mới về dữ liệu và trí tuệ nhân tạo",
+    "risk": "Thấp",
+    "consequences": "Chưa có nhiều chế tài cụ thể, nhưng là hướng siết của các năm tới; công ty có sản phẩm trí tuệ nhân tạo nên theo dõi để không bị bất ngờ.",
+    "whyCare": "Luật Dữ liệu và Luật Công nghiệp công nghệ số có hiệu lực trong năm 2025, 2026, đặt ra nghĩa vụ mới với dữ liệu quan trọng và với hệ thống trí tuệ nhân tạo. Công ty có sản phẩm dùng trí tuệ nhân tạo nên rà.",
+    "questions": "Sản phẩm của công ty có dùng trí tuệ nhân tạo tương tác với người dùng không? Đã có ai đọc hai luật này chưa?",
+    "frequency": "Một lần",
+    "reference": "Luật Dữ liệu năm 2024; Luật Công nghiệp công nghệ số năm 2025",
+    "assignee": "Pháp chế, kỹ thuật",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 74,
+    "group": "Sở hữu trí tuệ, hợp đồng",
+    "title": "Nhãn hiệu",
+    "risk": "Cao",
+    "consequences": "Người khác đăng ký trước có quyền buộc công ty đổi tên, đổi thương hiệu, gỡ sản phẩm, bồi thường. Chi phí đổi thương hiệu sau vài năm hoạt động lớn hơn nhiều lần phí đăng ký.",
+    "whyCare": "Việt Nam theo nguyên tắc ai nộp đơn trước được ưu tiên, không phải ai dùng trước. Đã có nhiều trường hợp công ty làm thương hiệu lớn rồi phát hiện người khác đã đăng ký tên đó.",
+    "questions": "Tên công ty, tên sản phẩm chính đã nộp đơn đăng ký nhãn hiệu chưa? Ai giữ văn bằng?",
+    "frequency": "Gia hạn theo kỳ hạn văn bằng",
+    "reference": "Luật Sở hữu trí tuệ, phần nhãn hiệu; cổng tra cứu của Cục Sở hữu trí tuệ",
+    "assignee": "Pháp chế",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 75,
+    "group": "Sở hữu trí tuệ, hợp đồng",
+    "title": "Bản quyền phần mềm dùng trong công ty",
+    "risk": "Cao",
+    "consequences": "Thanh tra bản quyền có thể đến bất ngờ; phạt hành chính cộng bồi thường theo giá license cho toàn bộ máy vi phạm; quy mô thương mại có thể bị xử lý hình sự. Mất uy tín khi làm với đối tác nước ngoài.",
+    "whyCare": "Phần mềm có bản dành cho cá nhân, gia đình, học sinh với giá rẻ hoặc không thu tiền, nhưng điều khoản không cho dùng trong tổ chức, mục đích thương mại. Dùng bản đó trong công ty là vi phạm bản quyền dù đã trả tiền.",
+    "questions": "Đã kiểm kê toàn bộ phần mềm đang dùng chưa? Mỗi phần mềm đang dùng bản nào, điều khoản có cho tổ chức dùng không?",
+    "frequency": "Kiểm kê định kỳ",
+    "reference": "Điều khoản sử dụng của từng nhà cung cấp; Luật Sở hữu trí tuệ",
+    "assignee": "Hành chính, kỹ thuật",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 76,
+    "group": "Sở hữu trí tuệ, hợp đồng",
+    "title": "Giấy phép phần mềm nguồn mở",
+    "risk": "Trung bình",
+    "consequences": "Vi phạm giấy phép có thể bị buộc công khai mã nguồn sản phẩm hoặc gỡ thư viện; kiện dân sự từ bên giữ bản quyền; ảnh hưởng thẩm định khi gọi vốn, bán công ty.",
+    "whyCare": "Nguồn mở không có nghĩa là dùng thế nào cũng được. Một số giấy phép yêu cầu công khai mã nguồn sản phẩm nếu tích hợp, một số hạn chế dùng thương mại. Công ty có sản phẩm phần mềm cần rà thư viện đang dùng.",
+    "questions": "Sản phẩm của công ty đang dùng thư viện nguồn mở theo giấy phép nào? Có giấy phép nào yêu cầu công khai mã nguồn không?",
+    "frequency": "Mỗi lần thêm thư viện lớn",
+    "reference": "Điều khoản từng giấy phép nguồn mở",
+    "assignee": "Kỹ thuật",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 77,
+    "group": "Sở hữu trí tuệ, hợp đồng",
+    "title": "Hợp đồng và điều khoản với khách hàng",
+    "risk": "Trung bình",
+    "consequences": "Điều khoản mẫu bất lợi cho người tiêu dùng bị vô hiệu, phạt theo luật bảo vệ người tiêu dùng; tranh chấp hoàn tiền, dịch vụ không có căn cứ giải quyết.",
+    "whyCare": "Hợp đồng mẫu, điều khoản dịch vụ, chính sách hoàn tiền, cam kết chất lượng cần khớp với luật bảo vệ người tiêu dùng mới và với chính sách dữ liệu cá nhân. Điều khoản mẫu bất lợi cho người tiêu dùng có thể bị vô hiệu.",
+    "questions": "Hợp đồng mẫu, điều khoản dịch vụ được ai soạn, rà lần cuối khi nào? Có khớp với chính sách quyền riêng tư không?",
+    "frequency": "Rà hằng năm",
+    "reference": "Luật Bảo vệ quyền lợi người tiêu dùng năm 2023; Luật Thương mại; Bộ luật Dân sự",
+    "assignee": "Pháp chế",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 78,
+    "group": "Sở hữu trí tuệ, hợp đồng",
+    "title": "Thông báo hoặc đăng ký website thương mại điện tử",
+    "risk": "Trung bình",
+    "consequences": "Phạt hành chính, khung với tổ chức khoảng 20-40 triệu cho không thông báo, 40-60 triệu cho không đăng ký sàn; có thể bị buộc gỡ chức năng bán hàng.",
+    "whyCare": "Website có chức năng đặt hàng, thanh toán, hoặc là sàn cho người khác bán, phải thông báo hoặc đăng ký với Bộ Công Thương. Nhiều website bán hàng bỏ qua bước này.",
+    "questions": "Website của công ty có chức năng đặt hàng, giỏ hàng, thanh toán không? Đã thông báo hoặc đăng ký chưa?",
+    "frequency": "Một lần, cập nhật khi thay đổi",
+    "reference": "Nghị định về thương mại điện tử và các nghị định sửa đổi",
+    "assignee": "Pháp chế",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 79,
+    "group": "Sở hữu trí tuệ, hợp đồng",
+    "title": "Thoả thuận bảo mật với bên ngoài",
+    "risk": "Trung bình",
+    "consequences": "Không phạt, nhưng khi bên ngoài làm lộ thông tin, kế hoạch, giá, khách hàng, công ty không có căn cứ pháp lý để yêu cầu bồi thường.",
+    "whyCare": "Đối tác, nhà cung cấp, ứng viên được cho xem thông tin nội bộ nên ký thoả thuận bảo mật trước. Không có thì khi rò rỉ không có căn cứ xử lý.",
+    "questions": "Có mẫu thoả thuận bảo mật sẵn chưa? Quy trình chia sẻ thông tin cho bên ngoài có yêu cầu ký trước không?",
+    "frequency": "Trước khi chia sẻ thông tin",
+    "reference": "Bộ luật Dân sự; Luật Sở hữu trí tuệ, phần bí mật kinh doanh",
+    "assignee": "Pháp chế",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 80,
+    "group": "Kiểm soát nội bộ tài chính",
+    "title": "Quản lý và bàn giao con dấu",
+    "risk": "Cao",
+    "consequences": "Dấu bị đóng vào văn bản chưa duyệt, đóng khống, đóng vào hợp đồng bất lợi: công ty vẫn phải thực hiện với bên ngoài, khó quy trách nhiệm cá nhân bên trong nếu không có quy chế và biên bản.",
+    "whyCare": "Luật cho công ty tự quyết định con dấu và cách quản lý, không còn thủ tục đăng ký mẫu dấu. Nghĩa là toàn bộ trách nhiệm nằm ở quy chế nội bộ. Giám đốc thường không tự đóng dấu mà giao kế toán hoặc hành chính, nhưng nếu không có quy chế và biên bản bàn giao thì khi dấu bị đóng vào văn bản chưa duyệt, đóng khống lên giấy trắng, hay đóng vào hợp đồng bất lợi, công ty vẫn chịu trách nhiệm với bên ngoài và rất khó quy trách nhiệm bên trong.",
+    "questions": "Con dấu đang do ai giữ, có biên bản bàn giao ghi rõ trách nhiệm không? Có quy chế nêu rõ chỉ đóng dấu sau khi người có thẩm quyền đã ký không? Có sổ theo dõi đóng dấu cho văn bản ra bên ngoài không? Có cấm đóng dấu khống, dấu treo không?",
+    "frequency": "Lập quy chế một lần; biên bản mỗi lần đổi người giữ",
+    "reference": "Luật Doanh nghiệp năm 2020, điều về con dấu; điều lệ và quy chế nội bộ",
+    "assignee": "Giám đốc, hành chính",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 81,
+    "group": "Kiểm soát nội bộ tài chính",
+    "title": "Phân quyền chuyển tiền trên ngân hàng điện tử",
+    "risk": "Cao",
+    "consequences": "Rủi ro chiếm dụng tiền của chính người trong công ty, không có lớp chặn trước, thường phát hiện sau nhiều năm với số tiền lớn. Đòi lại khó, kiện tụng dài.",
+    "whyCare": "Nguyên tắc cơ bản: người lập lệnh không phải là người duyệt lệnh. Ngân hàng điện tử doanh nghiệp đều có cơ chế tài khoản lập và tài khoản duyệt, hạn mức theo người, theo giao dịch, theo ngày, danh sách người thụ hưởng cố định. Nếu kế toán vừa lập vừa duyệt được, hoặc giám đốc giao luôn thiết bị xác thực cho kế toán để đỡ phiền, thì công ty không có lớp kiểm soát nào trước khi tiền đi, chỉ còn phát hiện sau khi xem sổ phụ. Đây là kịch bản chiếm dụng phổ biến nhất ở công ty nhỏ, thường kéo dài nhiều năm mới lộ.",
+    "questions": "Trên ngân hàng điện tử, ai có quyền lập lệnh, ai có quyền duyệt? Có ai vừa lập vừa duyệt được không? Thiết bị xác thực của người duyệt đang ở đâu? Có hạn mức theo giao dịch và theo ngày không? Có bắt buộc đề nghị thanh toán được duyệt trước khi lập lệnh không?",
+    "frequency": "Thiết lập một lần; rà quyền mỗi quý và khi thay người",
+    "reference": "Quy chế tài chính nội bộ; hướng dẫn phân quyền của từng ngân hàng; thông tư của Ngân hàng Nhà nước về an toàn bảo mật dịch vụ ngân hàng trực tuyến",
+    "assignee": "Giám đốc, kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 82,
+    "group": "Kiểm soát nội bộ tài chính",
+    "title": "Kiểm kê phương thức xác thực có thể làm tiền đi",
+    "risk": "Cao",
+    "consequences": "Một cửa tiền không ai quản là một đường chiếm dụng hoặc bị lừa đảo chuyển tiền; công ty không biết mình có bao nhiêu cửa thì không đóng được cửa nào.",
+    "whyCare": "Ngoài tài khoản đăng nhập, tiền có thể đi bằng nhiều thứ: thiết bị sinh mã của ngân hàng, mã xác thực gửi về số điện thoại nào đó, chữ ký số nếu ngân hàng đã chấp nhận chữ ký số làm phương thức xác thực cho tài khoản công ty, tài khoản nộp thuế điện tử trích tiền trực tiếp từ ngân hàng, thẻ công ty, ví hoặc cổng thanh toán liên kết. Mỗi thứ là một cửa. Không ai liệt kê đủ thì không biết cửa nào đang mở và ai đang cầm chìa.",
+    "questions": "Đã liệt kê đủ mọi phương thức có thể tạo lệnh chi từ tài khoản công ty chưa? Mỗi phương thức ai đang giữ? Chữ ký số của công ty có được đăng ký làm phương thức xác thực trên ngân hàng điện tử không? Số điện thoại nhận mã xác thực là của ai?",
+    "frequency": "Kiểm kê mỗi quý",
+    "reference": "Hợp đồng và cấu hình dịch vụ với từng ngân hàng; quy chế nội bộ",
+    "assignee": "Giám đốc, kế toán, kỹ thuật",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 83,
+    "group": "Kiểm soát nội bộ tài chính",
+    "title": "Tiền mặt và thủ quỹ",
+    "risk": "Trung bình",
+    "consequences": "Thất thoát tiền mặt kéo dài không phát hiện khi một người vừa giữ tiền vừa ghi sổ; tạm ứng quá hạn thành nợ khó đòi khi người đó nghỉ việc.",
+    "whyCare": "Người giữ tiền không được đồng thời là người ghi sổ. Công ty nhỏ hay để kế toán kiêm thủ quỹ, sổ quỹ và sổ kế toán do một người viết nên khớp nhau mãi dù tiền thật có thể đã lệch. Cần định mức tồn quỹ, kiểm kê định kỳ và đột xuất có biên bản, tạm ứng có hạn hoàn, chi tiền mặt chỉ cho khoản nhỏ dưới ngưỡng bắt buộc chuyển khoản. Với công ty dịch vụ, công nghệ, cách kiểm soát tốt nhất là đưa tiền mặt về gần 0 và dùng thẻ công ty có hạn mức.",
+    "questions": "Ai giữ tiền mặt, ai ghi sổ quỹ, có phải cùng một người không? Tồn quỹ hiện tại bao nhiêu, kiểm kê lần cuối khi nào, có biên bản không? Có khoản tạm ứng nào quá hạn chưa hoàn không?",
+    "frequency": "Kiểm kê hằng tháng và đột xuất",
+    "reference": "Luật Kế toán, điều về kiểm kê tài sản; quy chế tài chính nội bộ",
+    "assignee": "Giám đốc, kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  },
+  {
+    "id": 84,
+    "group": "Kiểm soát nội bộ tài chính",
+    "title": "Tách bạch chức năng và đối soát độc lập",
+    "risk": "Cao",
+    "consequences": "Không có đối soát độc lập thì mọi kiểm soát khác đều có thể bị người thực hiện che giấu. Đây là lớp cuối cùng phát hiện lệch, thiếu nó là mất khả năng phát hiện.",
+    "whyCare": "Bốn việc nên do những người khác nhau làm: đề nghị chi, duyệt chi, thực hiện chi, ghi sổ và đối soát. Công ty nhỏ không đủ người để tách hết, thì tối thiểu người duyệt và người đối soát sổ phụ ngân hàng không phải là người thực hiện. Giám đốc nên nhận thông báo biến động số dư và tự xem sổ phụ định kỳ, không đợi báo cáo của kế toán. Đối soát tự động giữa sổ phụ ngân hàng và sổ kế toán là công cụ rẻ nhất để phát hiện lệch sớm.",
+    "questions": "Sổ phụ ngân hàng hằng tháng ai đối soát với sổ kế toán, người đó có phải người lập lệnh không? Giám đốc có nhận thông báo biến động số dư không? Lần cuối giám đốc tự mở sổ phụ xem là khi nào?",
+    "frequency": "Đối soát hằng tháng; giám đốc xem hằng tuần",
+    "reference": "Quy chế tài chính nội bộ; nguyên tắc kiểm soát nội bộ theo chuẩn mực kế toán, kiểm toán",
+    "assignee": "Giám đốc, kế toán",
+    "status": "Chưa làm",
+    "note": ""
+  }
+];
+  const rawLegalChanges = [
+  {
+    "id": 1,
+    "law": "Luật Bảo vệ dữ liệu cá nhân năm 2025 & Nghị định hướng dẫn",
+    "effectiveDate": "01/01/2026",
+    "status": "Đang hiệu lực / Áp dụng",
+    "summary": "Thay thế Nghị định 13/2023/NĐ-CP. Khung phạt kỷ lục lên tới 5% doanh thu năm trước hoặc đến 3 tỷ đồng đối với tổ chức; quy định khắt khe về chuyển dữ liệu xuyên biên giới, sự đồng ý rõ ràng và hồ sơ đánh giá tác động.",
+    "impactItemIds": [
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70
+    ],
+    "actionRequired": "Rà soát toàn bộ luồng thu thập dữ liệu cá nhân, lập hồ sơ chuyển dữ liệu ra nước ngoài nếu dùng SaaS/Cloud ngoại, cập nhật chính sách quyền riêng tư."
+  },
+  {
+    "id": 2,
+    "law": "Luật Bảo hiểm xã hội năm 2024 & Nghị định hướng dẫn",
+    "effectiveDate": "01/07/2025",
+    "status": "Đang áp dụng",
+    "summary": "Mở rộng đối tượng tham gia BHXH bắt buộc đối với người quản lý doanh nghiệp, người đại diện phần vốn không hưởng lương; hạ số năm đóng tối thiểu hưởng hưu trí xuống 15 năm; siết chặt chế tài xử lý hành vi chậm đóng, trốn đóng.",
+    "impactItemIds": [
+      58,
+      59,
+      60,
+      61,
+      62
+    ],
+    "actionRequired": "Đăng ký tham gia BHXH bắt buộc cho giám đốc/chủ tịch dù không nhận lương; rà soát tách bạch phụ cấp, khoản bổ sung trong hợp đồng lao động."
+  },
+  {
+    "id": 3,
+    "law": "Bãi bỏ Lệ phí môn bài từ năm 2026",
+    "effectiveDate": "01/01/2026",
+    "status": "Đang áp dụng",
+    "summary": "Căn cứ Nghị quyết của Quốc hội về phát triển kinh tế tư nhân năm 2025, chính thức bãi bỏ nghĩa vụ nộp lệ phí môn bài hàng năm cho doanh nghiệp, hộ kinh doanh từ năm 2026. Tuy nhiên, nợ đọng các năm trước vẫn bị truy thu và tính phạt chậm nộp.",
+    "impactItemIds": [
+      15
+    ],
+    "actionRequired": "Kiểm tra tình trạng nghĩa vụ thuế trên eTax để dọn sạch nợ môn bài các năm cũ (nếu có), tránh bị khoá MST hoặc tạm hoãn xuất cảnh khi giải thể/chuyển địa chỉ."
+  },
+  {
+    "id": 4,
+    "law": "Luật Thuế Giá trị gia tăng năm 2024 & Nghị định mới",
+    "effectiveDate": "01/07/2025",
+    "status": "Đang áp dụng",
+    "summary": "Siết chặt điều kiện áp dụng thuế suất 0% đối với dịch vụ xuất khẩu; làm rõ danh mục đối tượng không chịu thuế; quy chuẩn hoá phân bổ thuế GTGT đầu vào đối với hoạt động hỗn hợp.",
+    "impactItemIds": [
+      22,
+      28,
+      34
+    ],
+    "actionRequired": "Lập bảng đối chiếu thuế suất từng mã sản phẩm dịch vụ; rà soát hồ sơ chứng minh dịch vụ xuất khẩu đủ điều kiện hưởng 0%."
+  },
+  {
+    "id": 5,
+    "law": "Luật Thuế Thu nhập doanh nghiệp năm 2025",
+    "effectiveDate": "Kỳ tính thuế 2025",
+    "status": "Đang áp dụng",
+    "summary": "Quy định khung thuế suất ưu đãi thấp hơn cho doanh nghiệp có quy mô doanh thu nhỏ và vừa; bổ sung danh mục chi phí được trừ cho nghiên cứu phát triển (R&D) và chuyển đổi số; sửa đổi trần khống chế chi phí.",
+    "impactItemIds": [
+      21,
+      29,
+      31,
+      32,
+      33
+    ],
+    "actionRequired": "Xác định đúng ngưỡng doanh thu năm trước để đăng ký thuế suất phù hợp; hạch toán riêng các khoản chi R&D và đổi mới sáng tạo."
+  },
+  {
+    "id": 6,
+    "law": "Hạ ngưỡng bắt buộc thanh toán không dùng tiền mặt",
+    "effectiveDate": "01/07/2025",
+    "status": "Đang áp dụng",
+    "summary": "Hạ mức giới hạn thanh toán tiền mặt bắt buộc phải chuyển khoản qua ngân hàng để được khấu trừ thuế GTGT và tính chi phí hợp lý được trừ TNDN (áp dụng cả trường hợp nhiều lần mua trong ngày).",
+    "impactItemIds": [
+      22,
+      33
+    ],
+    "actionRequired": "Cập nhật quy chế tài chính nội bộ, chặn hoàn ứng hoặc chi tiền mặt cho các hóa đơn vượt ngưỡng; tuyệt đối không nộp tiền mặt trực tiếp vào tài khoản người bán."
+  },
+  {
+    "id": 7,
+    "law": "Quản lý thuế đối với Nhà cung cấp nước ngoài (NCCNN)",
+    "effectiveDate": "Năm 2025 - 2026",
+    "status": "Đang áp dụng",
+    "summary": "Quy định rõ cơ chế bên mua không phải khấu trừ nộp thay nếu NCCNN đã đăng ký thuế tại VN (Google, Meta, OpenAI, Microsoft), nhưng hóa đơn invoice nước ngoài không được khấu trừ GTGT mà chỉ được tính chi phí TNDN nếu đủ 5 loại chứng từ.",
+    "impactItemIds": [
+      23,
+      24
+    ],
+    "actionRequired": "Không kê khai khấu trừ thuế GTGT đầu vào cho invoice ChatGPT, Google Workspace; lưu trữ trọn bộ invoice + chứng từ thẻ + điều khoản + giải trình phục vụ SXKD."
+  },
+  {
+    "id": 8,
+    "law": "Luật Thuế Thu nhập cá nhân năm 2025",
+    "effectiveDate": "Từ giữa năm 2026",
+    "status": "Sắp hiệu lực / Chuẩn bị",
+    "summary": "Cập nhật biểu thuế lũy tiến từng phần, điều chỉnh mức giảm trừ gia cảnh phù hợp biến động chỉ số giá; quy định rõ ràng thuế suất đối với thu nhập từ đầu tư vốn, chuyển nhượng vốn và thưởng cổ phiếu.",
+    "impactItemIds": [
+      20,
+      25,
+      26
+    ],
+    "actionRequired": "Rà soát lại quy chế trả thưởng, phân phối lợi nhuận sau thuế cho sáng lập viên/cổ đông để khấu trừ đúng nghĩa vụ thuế TNCN đầu tư vốn."
+  },
+  {
+    "id": 9,
+    "law": "Luật Giao dịch điện tử 2023 & Nghị định chữ ký số năm 2025",
+    "effectiveDate": "Đã hiệu lực toàn diện",
+    "status": "Đang áp dụng",
+    "summary": "Công nhận giá trị pháp lý toàn diện của chữ ký điện tử an toàn, chữ ký số từ xa (Remote Signing); quy chuẩn dịch vụ tin cậy và trách nhiệm của người sử dụng chứng thư số trong doanh nghiệp.",
+    "impactItemIds": [
+      7,
+      11
+    ],
+    "actionRequired": "Kiểm kê định kỳ danh sách USB Token, chữ ký số từ xa; ban hành quy chế phân quyền ký thuế, ký hoá đơn và ký hợp đồng kinh tế riêng biệt."
+  },
+  {
+    "id": 10,
+    "law": "Luật Phòng cháy, chữa cháy và cứu nạn, cứu hộ năm 2024",
+    "effectiveDate": "01/07/2025",
+    "status": "Đang áp dụng",
+    "summary": "Quy định chặt chẽ trách nhiệm PCCC đối với người đứng đầu cơ sở kinh doanh, văn phòng làm việc thuê trong toà nhà hỗn hợp; bắt buộc phân định rõ trách nhiệm giữa bên thuê và bên cho thuê trong hợp đồng.",
+    "impactItemIds": [
+      57
+    ],
+    "actionRequired": "Kiểm tra phụ lục hợp đồng thuê văn phòng về trách nhiệm PCCC; ban hành nội quy, sơ đồ thoát nạn và phân công đội viên PCCC cơ sở."
+  },
+  {
+    "id": 11,
+    "law": "Luật Công đoàn năm 2024 & Nghị định tài chính công đoàn 2026",
+    "effectiveDate": "Từ đầu năm 2026",
+    "status": "Đang áp dụng",
+    "summary": "Quy định cụ thể các trường hợp doanh nghiệp được miễn, giảm, tạm dừng đóng kinh phí công đoàn 2% khi gặp khó khăn khách quan; quản lý chặt chẽ nghĩa vụ trích nộp dù có hay chưa có công đoàn cơ sở.",
+    "impactItemIds": [
+      53,
+      63
+    ],
+    "actionRequired": "Kế toán duy trì trích nộp kinh phí công đoàn 2% trên quỹ lương đóng BHXH; rà soát điều kiện nếu doanh nghiệp thuộc diện xin tạm hoãn/giảm nộp."
+  },
+  {
+    "id": 12,
+    "law": "Quy định mở rộng hoá đơn điện tử từ máy tính tiền",
+    "effectiveDate": "2025 - 2026",
+    "status": "Đang áp dụng",
+    "summary": "Mở rộng bắt buộc đối với cơ sở kinh doanh cung cấp hàng hoá, dịch vụ trực tiếp đến người tiêu dùng (bán lẻ, ăn uống, dịch vụ trực tuyến) phải khởi tạo từ máy tính tiền kết nối dữ liệu tự động với cơ quan thuế.",
+    "impactItemIds": [
+      37,
+      39,
+      40
+    ],
+    "actionRequired": "Đánh giá mô hình kinh doanh B2C; nếu thuộc diện bắt buộc cần phối hợp nhà cung cấp phần mềm kết nối truyền dữ liệu hoá đơn máy tính tiền."
+  },
+  {
+    "id": 13,
+    "law": "Luật Dữ liệu 2024 & Luật Công nghiệp công nghệ số 2025",
+    "effectiveDate": "2025 - 2026",
+    "status": "Đang áp dụng",
+    "summary": "Quy định việc xây dựng Chiến lược dữ liệu quốc gia, phân loại dữ liệu số cốt lõi, bảo đảm an toàn dữ liệu công nghiệp và khung pháp lý đối với việc phát triển, ứng dụng Trí tuệ nhân tạo (AI).",
+    "impactItemIds": [
+      73
+    ],
+    "actionRequired": "Doanh nghiệp công nghệ có sản phẩm AI hoặc khai thác dữ liệu người dùng cần lập danh mục phân loại dữ liệu và cập nhật điều khoản cam kết đạo đức AI."
+  },
+  {
+    "id": 14,
+    "law": "Tiêu chuẩn Kế toán trưởng & Chế độ kế toán DN siêu nhỏ mới",
+    "effectiveDate": "Từ giữa năm 2026",
+    "status": "Đang áp dụng",
+    "summary": "Thông tư mới hướng dẫn chế độ kế toán cho DN siêu nhỏ và quy định kiểm tra tiêu chuẩn người làm kế toán trưởng / người phụ trách kế toán, siết thời hạn tối đa được phép bố trí tạm thời.",
+    "impactItemIds": [
+      10
+    ],
+    "actionRequired": "Rà soát tiêu chí phân loại quy mô doanh nghiệp; nếu đã vượt ngưỡng siêu nhỏ phải hoàn tất bổ nhiệm kế toán trưởng có chứng chỉ bồi dưỡng theo luật."
+  }
+];
+  const rawComplianceCalendar = [
+  {
+    "period": "Hàng tháng",
+    "items": [
+      {
+        "deadline": "Trước ngày 20 hàng tháng",
+        "title": "Nộp tờ khai & tiền thuế GTGT (khai theo tháng)",
+        "department": "Kế toán",
+        "category": "Thuế",
+        "description": "Dành cho DN có tổng doanh thu năm trước liền kề trên 50 tỷ đồng. Nộp qua Cổng Thuế điện tử eTax.",
+        "riskLevel": "Cao"
+      },
+      {
+        "deadline": "Trước ngày 20 hàng tháng",
+        "title": "Nộp tờ khai thuế TNCN tháng (nếu có phát sinh)",
+        "department": "Kế toán",
+        "category": "Thuế",
+        "description": "Khấu trừ và nộp số thuế TNCN phát sinh từ tiền lương, tiền công trong tháng.",
+        "riskLevel": "Trung bình"
+      },
+      {
+        "deadline": "Ngày cuối cùng của tháng",
+        "title": "Trích nộp tiền BHXH, BHYT, BHTN, BHTNLĐ-BNN",
+        "department": "Nhân sự, Kế toán",
+        "category": "Bảo hiểm",
+        "description": "Nộp tiền đóng bảo hiểm bắt buộc theo thông báo kết quả đóng (Mẫu C12-TS) của cơ quan BHXH.",
+        "riskLevel": "Cao"
+      },
+      {
+        "deadline": "Hàng tháng (cùng kỳ nộp BHXH)",
+        "title": "Trích nộp Kinh phí Công đoàn 2%",
+        "department": "Kế toán",
+        "category": "Công đoàn",
+        "description": "Đóng 2% quỹ tiền lương làm căn cứ đóng BHXH cho người lao động về tài khoản Công đoàn quận/huyện.",
+        "riskLevel": "Trung bình"
+      },
+      {
+        "deadline": "Trong tháng phát sinh",
+        "title": "Báo tăng, giảm lao động tham gia BHXH",
+        "department": "Nhân sự",
+        "category": "Lao động & BHXH",
+        "description": "Lập hồ sơ điện tử báo tăng khi ký HĐLĐ mới hoặc báo giảm khi chấm dứt HĐLĐ.",
+        "riskLevel": "Trung bình"
+      }
+    ]
+  },
+  {
+    "period": "Hàng quý",
+    "items": [
+      {
+        "deadline": "Ngày cuối cùng tháng đầu quý sau (30/04, 31/07, 31/10, 31/01)",
+        "title": "Nộp tờ khai thuế GTGT quý",
+        "department": "Kế toán",
+        "category": "Thuế",
+        "description": "Áp dụng cho doanh nghiệp mới thành lập hoặc có doanh thu năm trước từ 50 tỷ đồng trở xuống.",
+        "riskLevel": "Cao"
+      },
+      {
+        "deadline": "Ngày cuối cùng tháng đầu quý sau (30/04, 31/07, 31/10, 31/01)",
+        "title": "Nộp tờ khai thuế TNCN quý",
+        "department": "Kế toán",
+        "category": "Thuế",
+        "description": "Khai và nộp thuế TNCN khấu trừ quý tương ứng với kỳ khai thuế GTGT.",
+        "riskLevel": "Trung bình"
+      },
+      {
+        "deadline": "Ngày 30 của tháng đầu quý sau",
+        "title": "Tạm nộp thuế Thu nhập doanh nghiệp (TNDN) quý",
+        "department": "Kế toán",
+        "category": "Thuế",
+        "description": "Tạm nộp tiền thuế TNDN theo kết quả kinh doanh quý. Tổng 4 quý phải đạt tối thiểu 80% số thuế quyết toán năm.",
+        "riskLevel": "Trung bình"
+      },
+      {
+        "deadline": "Định kỳ mỗi quý",
+        "title": "Kiểm kê & rà soát quyền chữ ký số, tài khoản ngân hàng",
+        "department": "Giám đốc, Kế toán, Kỹ thuật",
+        "category": "Kiểm soát nội bộ",
+        "description": "Kiểm kê số lượng token, thời hạn cert, phân quyền lập/duyệt lệnh thanh toán ngân hàng điện tử.",
+        "riskLevel": "Cao"
+      }
+    ]
+  },
+  {
+    "period": "Định kỳ 6 tháng",
+    "items": [
+      {
+        "deadline": "Trước ngày 05/06 hàng năm",
+        "title": "Báo cáo tình hình sử dụng lao động 6 tháng đầu năm",
+        "department": "Nhân sự",
+        "category": "Lao động",
+        "description": "Nộp báo cáo định kỳ qua Cổng Dịch vụ công Quốc gia hoặc Sở Lao động - Thương binh và Xã hội.",
+        "riskLevel": "Thấp"
+      },
+      {
+        "deadline": "Trước ngày 05/07 hàng năm",
+        "title": "Báo cáo công tác an toàn, vệ sinh lao động 6 tháng",
+        "department": "Nhân sự, Hành chính",
+        "category": "ATVSLĐ",
+        "description": "Lập và gửi báo cáo về tình hình ATVSLĐ nếu thuộc đối tượng quy định tại địa phương.",
+        "riskLevel": "Thấp"
+      }
+    ]
+  },
+  {
+    "period": "Hàng năm (Quyết toán & Báo cáo)",
+    "items": [
+      {
+        "deadline": "Trước ngày 30/01 hàng năm",
+        "title": "Rà soát lệ phí môn bài các năm cũ (đến 2025)",
+        "department": "Kế toán",
+        "category": "Thuế",
+        "description": "Từ 2026 bãi bỏ môn bài, nhưng cần rà soát đảm bảo các năm trước đã hoàn tất 100% nghĩa vụ.",
+        "riskLevel": "Thấp"
+      },
+      {
+        "deadline": "Ngày thứ 90 kể từ khi kết thúc năm tài chính (31/03)",
+        "title": "Nộp Báo cáo tài chính (BCTC) năm",
+        "department": "Kế toán",
+        "category": "Kế toán",
+        "description": "Nộp BCTC năm đã lập kèm Thuyết minh BCTC lên cơ quan Thuế, Thống kê và cơ quan đăng ký kinh doanh.",
+        "riskLevel": "Cao"
+      },
+      {
+        "deadline": "Ngày thứ 90 kể từ khi kết thúc năm tài chính (31/03)",
+        "title": "Nộp hồ sơ Quyết toán thuế TNDN năm",
+        "department": "Kế toán",
+        "category": "Thuế",
+        "description": "Tờ khai quyết toán thuế TNDN (Mẫu 03/TNDN) kèm các phụ lục ưu đãi, phụ lục chuyển lỗ và giao dịch liên kết (nếu có).",
+        "riskLevel": "Cao"
+      },
+      {
+        "deadline": "Ngày thứ 90 kể từ khi kết thúc năm tài chính (31/03)",
+        "title": "Nộp hồ sơ Quyết toán thuế TNCN năm",
+        "department": "Kế toán",
+        "category": "Thuế",
+        "description": "Tờ khai quyết toán thuế TNCN (Mẫu 05/QTT-TNCN) đối với tổ chức chi trả thu nhập trong năm.",
+        "riskLevel": "Trung bình"
+      },
+      {
+        "deadline": "Trước ngày 20/11 hàng năm",
+        "title": "Báo cáo tình hình sử dụng lao động cả năm",
+        "department": "Nhân sự",
+        "category": "Lao động",
+        "description": "Nộp qua Cổng dịch vụ công Quốc gia tổng hợp biến động tăng giảm lao động năm vừa qua.",
+        "riskLevel": "Thấp"
+      },
+      {
+        "deadline": "Trước ngày 10/01 năm kế tiếp",
+        "title": "Báo cáo tổng kết công tác ATVSLĐ & Tai nạn lao động",
+        "department": "Nhân sự, Hành chính",
+        "category": "ATVSLĐ",
+        "description": "Báo cáo định kỳ tình hình tai nạn lao động cả năm (kể cả không có tai nạn xảy ra).",
+        "riskLevel": "Thấp"
+      },
+      {
+        "deadline": "Ít nhất 1 lần trong năm",
+        "title": "Tổ chức khám sức khoẻ định kỳ cho người lao động",
+        "department": "Nhân sự",
+        "category": "ATVSLĐ",
+        "description": "Bắt buộc tổ chức khám sức khoẻ định kỳ cho 100% người lao động và lưu trữ hồ sơ y tế.",
+        "riskLevel": "Trung bình"
+      },
+      {
+        "deadline": "Hàng năm hoặc theo nhiệm kỳ",
+        "title": "Tổ chức Hội nghị người lao động & Đối thoại định kỳ",
+        "department": "Nhân sự, Ban giám đốc",
+        "category": "Lao động",
+        "description": "Thực hiện quy chế dân chủ cơ sở, tổ chức đối thoại tại nơi làm việc và lập biên bản đối thoại.",
+        "riskLevel": "Thấp"
+      }
+    ]
+  }
+];
+
+  const STORAGE_KEY = 'compliance_checklist_state_v1';
+
+  createApp({
+    setup() {
+      // Navigation
+      const activeTab = ref('checklist'); // 'checklist' | 'legalUpdates' | 'calendar'
+      const toastMessage = ref('');
+      const savedItemNotification = ref(null);
+
+      // Data states
+      const items = ref(rawChecklist);
+      const legalChanges = ref(rawLegalChanges);
+      const complianceCalendar = ref(rawComplianceCalendar);
+
+      // Accordion expanded state
+      const expandedMap = reactive({});
+      // Expand first 2 items by default for nice presentation
+      expandedMap[1] = true;
+      expandedMap[2] = true;
+
+      // Filters
+      const searchQuery = ref('');
+      const filterGroup = ref('');
+      const filterRisk = ref('');
+      const filterAssignee = ref('');
+      const filterStatus = ref('');
+      const calendarFilter = ref('');
+
+      // Show toast helper
+      const showToast = (msg, duration = 2500) => {
+        toastMessage.value = msg;
+        setTimeout(() => {
+          if (toastMessage.value === msg) {
+            toastMessage.value = '';
+          }
+        }, duration);
+      };
+
+      // Load saved state from LocalStorage
+      const loadSavedState = () => {
+        try {
+          const saved = localStorage.getItem(STORAGE_KEY);
+          if (saved) {
+            const parsed = JSON.parse(saved);
+            if (Array.isArray(parsed)) {
+              const savedMap = new Map(parsed.map(x => [x.id, x]));
+              items.value.forEach(item => {
+                const s = savedMap.get(item.id);
+                if (s) {
+                  if (s.status) item.status = s.status;
+                  if (s.note !== undefined) item.note = s.note;
+                }
+              });
+            }
+          }
+        } catch (e) {
+          console.warn('Could not load stored compliance data:', e);
+        }
+      };
+
+      // Save state to LocalStorage
+      const saveState = () => {
+        try {
+          const payload = items.value.map(i => ({
+            id: i.id,
+            status: i.status,
+            note: i.note || ''
+          }));
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+        } catch (e) {
+          console.warn('Could not save compliance data:', e);
+        }
+      };
+
+      onMounted(() => {
+        loadSavedState();
+      });
+
+      // Distinct lists for dropdowns
+      const groupList = computed(() => {
+        return Array.from(new Set(items.value.map(i => i.group)));
+      });
+
+      const assigneeList = computed(() => {
+        const set = new Set();
+        items.value.forEach(i => {
+          i.assignee.split(',').forEach(a => set.add(a.trim()));
+        });
+        return Array.from(set).sort();
+      });
+
+      // Filtered items
+      const filteredItems = computed(() => {
+        const q = searchQuery.value.trim().toLowerCase();
+        const grp = filterGroup.value;
+        const rsk = filterRisk.value;
+        const asn = filterAssignee.value.toLowerCase();
+        const stt = filterStatus.value;
+
+        return items.value.filter(item => {
+          if (grp && item.group !== grp) return false;
+          if (rsk && item.risk !== rsk) return false;
+          if (stt && item.status !== stt) return false;
+          if (asn && !item.assignee.toLowerCase().includes(asn)) return false;
+
+          if (q) {
+            const inTitle = item.title.toLowerCase().includes(q);
+            const inConseq = item.consequences.toLowerCase().includes(q);
+            const inRef = item.reference.toLowerCase().includes(q);
+            const inWhy = item.whyCare.toLowerCase().includes(q);
+            const inQuest = item.questions.toLowerCase().includes(q);
+            const inGroup = item.group.toLowerCase().includes(q);
+            const inNote = (item.note || '').toLowerCase().includes(q);
+            const inId = String(item.id) === q || ('#' + item.id) === q;
+
+            if (!inTitle && !inConseq && !inRef && !inWhy && !inQuest && !inGroup && !inNote && !inId) {
+              return false;
+            }
+          }
+          return true;
+        });
+      });
+
+      const hasActiveFilter = computed(() => {
+        return !!(searchQuery.value || filterGroup.value || filterRisk.value || filterAssignee.value || filterStatus.value);
+      });
+
+      const resetFilters = () => {
+        searchQuery.value = '';
+        filterGroup.value = '';
+        filterRisk.value = '';
+        filterAssignee.value = '';
+        filterStatus.value = '';
+      };
+
+      const setRiskFilter = (riskVal) => {
+        if (filterRisk.value === riskVal) {
+          filterRisk.value = '';
+        } else {
+          filterRisk.value = riskVal;
+        }
+      };
+
+      // Statistics calculations
+      const stats = computed(() => {
+        const total = items.value.length || 1;
+        let completed = 0;
+        let inProgress = 0;
+        let pending = 0;
+
+        let highTotal = 0;
+        let highCompleted = 0;
+
+        let medTotal = 0;
+        let medCompleted = 0;
+
+        let lowTotal = 0;
+        let lowCompleted = 0;
+
+        items.value.forEach(i => {
+          if (i.status === 'Đạt') completed++;
+          else if (i.status === 'Đang làm') inProgress++;
+          else pending++;
+
+          if (i.risk === 'Cao') {
+            highTotal++;
+            if (i.status === 'Đạt') highCompleted++;
+          } else if (i.risk === 'Trung bình') {
+            medTotal++;
+            if (i.status === 'Đạt') medCompleted++;
+          } else if (i.risk === 'Thấp') {
+            lowTotal++;
+            if (i.status === 'Đạt') lowCompleted++;
+          }
+        });
+
+        return {
+          completedCount: completed,
+          inProgressCount: inProgress,
+          pendingCount: pending,
+          percentage: Math.round((completed / total) * 100),
+          highRiskTotal: highTotal,
+          highRiskCompleted: highCompleted,
+          highRiskIncomplete: highTotal - highCompleted,
+          medRiskTotal: medTotal,
+          medRiskCompleted: medCompleted,
+          lowRiskTotal: lowTotal,
+          lowRiskCompleted: lowCompleted
+        };
+      });
+
+      // Actions on items
+      const toggleExpand = (id) => {
+        expandedMap[id] = !expandedMap[id];
+      };
+
+      const expandAll = () => {
+        items.value.forEach(i => {
+          expandedMap[i.id] = true;
+        });
+      };
+
+      const collapseAll = () => {
+        items.value.forEach(i => {
+          expandedMap[i.id] = false;
+        });
+      };
+
+      const cycleStatus = (item) => {
+        if (item.status === 'Chưa làm') {
+          item.status = 'Đang làm';
+        } else if (item.status === 'Đang làm') {
+          item.status = 'Đạt';
+        } else {
+          item.status = 'Chưa làm';
+        }
+        saveState();
+        showToast(`Đã cập nhật mục #${item.id} -> ${item.status}`);
+      };
+
+      const setStatus = (item, newStatus) => {
+        item.status = newStatus;
+        saveState();
+        showToast(`Mục #${item.id}: ${newStatus}`);
+      };
+
+      let noteTimeout = null;
+      const onNoteChange = (item) => {
+        clearTimeout(noteTimeout);
+        savedItemNotification.value = item.id;
+        noteTimeout = setTimeout(() => {
+          saveState();
+          setTimeout(() => {
+            if (savedItemNotification.value === item.id) {
+              savedItemNotification.value = null;
+            }
+          }, 1500);
+        }, 350);
+      };
+
+      // Navigate to a specific item from Legal Updates tab
+      const navigateToItem = (itemId) => {
+        activeTab.value = 'checklist';
+        resetFilters();
+        expandedMap[itemId] = true;
+        setTimeout(() => {
+          const el = document.getElementById('item-' + itemId);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            el.classList.add('ring-4', 'ring-brand-500');
+            setTimeout(() => {
+              el.classList.remove('ring-4', 'ring-brand-500');
+            }, 2500);
+          }
+        }, 150);
+      };
+
+      // Calendar filtered view
+      const filteredCalendar = computed(() => {
+        if (!calendarFilter.value) return complianceCalendar.value;
+        return complianceCalendar.value.filter(c => c.period === calendarFilter.value);
+      });
+
+      // Export & Print
+      const printReport = () => {
+        // Expand all so all details are visible in print
+        expandAll();
+        setTimeout(() => {
+          window.print();
+        }, 200);
+      };
+
+      const exportJson = () => {
+        const payload = {
+          exportDate: new Date().toISOString(),
+          appName: 'Corporate Compliance Checklist',
+          stats: stats.value,
+          data: items.value.map(i => ({
+            id: i.id,
+            title: i.title,
+            group: i.group,
+            risk: i.risk,
+            assignee: i.assignee,
+            status: i.status,
+            note: i.note || ''
+          }))
+        };
+        const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(payload, null, 2));
+        const a = document.createElement('a');
+        a.setAttribute('href', dataStr);
+        a.setAttribute('download', `compliance-progress-${new Date().toISOString().slice(0, 10)}.json`);
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        showToast('Đã xuất file JSON tiến độ thành công!');
+      };
+
+      const importJson = (event) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const parsed = JSON.parse(e.target.result);
+            const list = parsed.data || (Array.isArray(parsed) ? parsed : null);
+            if (!list) {
+              alert('File JSON không đúng định dạng chuẩn.');
+              return;
+            }
+            const map = new Map(list.map(x => [x.id, x]));
+            items.value.forEach(item => {
+              const matched = map.get(item.id);
+              if (matched) {
+                if (matched.status) item.status = matched.status;
+                if (matched.note !== undefined) item.note = matched.note;
+              }
+            });
+            saveState();
+            showToast('Đã khôi phục dữ liệu tiến độ từ JSON thành công!');
+          } catch (err) {
+            alert('Lỗi khi đọc file JSON: ' + err.message);
+          }
+        };
+        reader.readAsText(file);
+        // reset input
+        event.target.value = '';
+      };
+
+      const confirmReset = () => {
+        if (confirm('Bạn có chắc chắn muốn đặt lại tất cả trạng thái checklist và ghi chú về ban đầu?')) {
+          localStorage.removeItem(STORAGE_KEY);
+          items.value.forEach(item => {
+            item.status = 'Chưa làm';
+            item.note = '';
+          });
+          // keep example note on item 1
+          items.value[0].note = 'Ví dụ cách ghi: Thiếu chứng từ góp vốn đợt 2. Kế toán bổ sung trước 30/9.';
+          saveState();
+          showToast('Đã đặt lại dữ liệu về mặc định ban đầu!');
+        }
+      };
+
+      const currentDateFormatted = computed(() => {
+        return new Date().toLocaleDateString('vi-VN', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+        });
+      });
+
+      return {
+        activeTab,
+        toastMessage,
+        savedItemNotification,
+        items,
+        legalChanges,
+        complianceCalendar,
+        expandedMap,
+        searchQuery,
+        filterGroup,
+        filterRisk,
+        filterAssignee,
+        filterStatus,
+        calendarFilter,
+        groupList,
+        assigneeList,
+        filteredItems,
+        hasActiveFilter,
+        resetFilters,
+        setRiskFilter,
+        stats,
+        toggleExpand,
+        expandAll,
+        collapseAll,
+        cycleStatus,
+        setStatus,
+        onNoteChange,
+        navigateToItem,
+        filteredCalendar,
+        printReport,
+        exportJson,
+        importJson,
+        confirmReset,
+        currentDateFormatted
+      };
+    }
+  }).mount('#app');
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "name": "Compliance Checklist Dashboard",
+  "description": "Ứng dụng tra cứu và quản trị tuân thủ doanh nghiệp toàn diện với 84 mục checklist chuẩn, 14 thay đổi pháp lý 2025-2026 và lịch tuân thủ trong năm.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

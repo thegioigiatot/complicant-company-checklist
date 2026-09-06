@@ -1,0 +1,917 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Compliance Checklist Dashboard</title>
+    <meta name="description" content="Ứng dụng tra cứu và quản trị tuân thủ doanh nghiệp toàn diện với 84 mục checklist chuẩn, 14 thay đổi pháp lý 2025-2026 và lịch tuân thủ trong năm." />
+    <meta property="og:title" content="Compliance Checklist Dashboard" />
+    <meta property="og:description" content="Ứng dụng tra cứu và quản trị tuân thủ doanh nghiệp toàn diện với 84 mục checklist chuẩn, 14 thay đổi pháp lý 2025-2026 và lịch tuân thủ trong năm." />
+    <meta property="og:type" content="website" />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+            },
+            colors: {
+              brand: {
+                50: '#f0f7ff',
+                100: '#e0effe',
+                500: '#0284c7',
+                600: '#0369a1',
+                700: '#075985',
+                900: '#0c4a6e',
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <!-- Vue 3 Prod CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+    <style>
+      [v-cloak] { display: none !important; }
+      @media print {
+        .no-print { display: none !important; }
+        .print-only { display: block !important; }
+        body { background: white !important; color: black !important; font-size: 12pt; }
+        .card-print { break-inside: avoid; border: 1px solid #cbd5e1 !important; box-shadow: none !important; margin-bottom: 12px !important; }
+      }
+      .print-only { display: none; }
+      /* Custom subtle scrollbar */
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: #f1f5f9; }
+      ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-800 antialiased font-sans min-h-screen selection:bg-brand-500 selection:text-white">
+    <div id="app" v-cloak class="min-h-screen flex flex-col">
+      <!-- HEADER & TOP NAVIGATION BAR -->
+      <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex items-center justify-between h-16 sm:h-20">
+            <!-- Brand Logo & Title -->
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-brand-700 flex items-center justify-center text-white shadow-sm ring-2 ring-slate-100">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h1 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight leading-tight">
+                    Quản Trị Tuân Thủ Doanh Nghiệp
+                  </h1>
+                  <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-brand-50 text-brand-700 border border-brand-200">
+                    2025 - 2026
+                  </span>
+                </div>
+                <p class="text-xs text-slate-500 hidden sm:block">
+                  Hệ thống 84 mục chuẩn rà soát rủi ro pháp lý, thuế, lao động & an toàn nội bộ
+                </p>
+              </div>
+            </div>
+
+            <!-- Action Tools -->
+            <div class="flex items-center gap-2">
+              <button 
+                @click="printReport" 
+                title="In hoặc Xuất báo cáo PDF"
+                class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-lg transition-colors cursor-pointer"
+              >
+                <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                </svg>
+                <span class="hidden md:inline">In / Xuất PDF</span>
+              </button>
+
+              <button 
+                @click="exportJson" 
+                title="Lưu file sao lưu tiến độ"
+                class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-lg transition-colors cursor-pointer"
+              >
+                <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                <span class="hidden md:inline">Xuất JSON</span>
+              </button>
+
+              <label 
+                title="Nạp dữ liệu từ file JSON"
+                class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-lg transition-colors cursor-pointer"
+              >
+                <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                </svg>
+                <span class="hidden md:inline">Nhập JSON</span>
+                <input type="file" accept=".json" @change="importJson" class="hidden" />
+              </label>
+
+              <button 
+                @click="confirmReset" 
+                title="Khôi phục trạng thái ban đầu"
+                class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- MAIN NAVIGATION TABS -->
+          <div class="flex space-x-1 border-t border-slate-100 overflow-x-auto no-scrollbar py-2">
+            <button 
+              @click="activeTab = 'checklist'"
+              :class="activeTab === 'checklist' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 font-medium'"
+              class="px-3.5 py-2 rounded-lg text-xs sm:text-sm whitespace-nowrap flex items-center gap-2 transition-all cursor-pointer"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+              </svg>
+              <span>84 Mục Checklist Tuân Thủ</span>
+              <span class="px-1.5 py-0.5 rounded text-[10px] font-bold" :class="activeTab === 'checklist' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'">
+                {{ stats.completedCount }}/{{ items.length }}
+              </span>
+            </button>
+
+            <button 
+              @click="activeTab = 'legalUpdates'"
+              :class="activeTab === 'legalUpdates' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 font-medium'"
+              class="px-3.5 py-2 rounded-lg text-xs sm:text-sm whitespace-nowrap flex items-center gap-2 transition-all cursor-pointer"
+            >
+              <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              <span>Điểm Mới 2025 - 2026</span>
+              <span class="px-1.5 py-0.5 rounded text-[10px] font-bold" :class="activeTab === 'legalUpdates' ? 'bg-amber-400 text-slate-900' : 'bg-amber-100 text-amber-800'">
+                14 Điểm
+              </span>
+            </button>
+
+            <button 
+              @click="activeTab = 'calendar'"
+              :class="activeTab === 'calendar' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 font-medium'"
+              class="px-3.5 py-2 rounded-lg text-xs sm:text-sm whitespace-nowrap flex items-center gap-2 transition-all cursor-pointer"
+            >
+              <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span>Lịch Tuân Thủ Trong Năm</span>
+              <span class="px-1.5 py-0.5 rounded text-[10px] font-bold" :class="activeTab === 'calendar' ? 'bg-white/20 text-white' : 'bg-blue-100 text-blue-800'">
+                Deadline
+              </span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- PRINT-ONLY HEADER -->
+      <div class="print-only p-6 border-b border-slate-300 mb-6 text-center">
+        <h1 class="text-2xl font-bold text-slate-900 uppercase tracking-wide">Báo Cáo Quản Trị & Rà Soát Tuân Thủ Doanh Nghiệp</h1>
+        <p class="text-sm text-slate-600 mt-1">Hệ thống chuẩn hoá 84 tiêu chí tuân thủ pháp luật Việt Nam (Áp dụng 2025 - 2026)</p>
+        <div class="mt-4 flex justify-between text-xs text-slate-500 border-t pt-2">
+          <span>Ngày in báo cáo: {{ currentDateFormatted }}</span>
+          <span>Tiến độ hoàn thành: {{ stats.completedCount }}/84 mục ({{ stats.percentage }}%)</span>
+          <span>Mục rủi ro cao chưa đạt: {{ stats.highRiskIncomplete }} mục</span>
+        </div>
+      </div>
+
+      <!-- MAIN BODY CONTAINER -->
+      <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- ==================================================== -->
+        <!-- TAB 1: 84 MỤC CHECKLIST TUÂN THỦ -->
+        <!-- ==================================================== -->
+        <div v-show="activeTab === 'checklist'" class="space-y-6">
+
+          <!-- 1. DASHBOARD THỐNG KÊ NHANH (TOP BAR) -->
+          <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
+              
+              <!-- Cột 1: Tiến độ tổng quan -->
+              <div class="md:col-span-4 lg:col-span-5 border-b md:border-b-0 md:border-r border-slate-100 pb-4 md:pb-0 md:pr-5">
+                <div class="flex items-center justify-between mb-2">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Tiến Độ Rà Soát</span>
+                    <span class="px-2 py-0.5 rounded-full text-xs font-bold" :class="stats.percentage === 100 ? 'bg-emerald-100 text-emerald-800' : 'bg-brand-50 text-brand-700'">
+                      {{ stats.percentage }}% Hoàn Thành
+                    </span>
+                  </div>
+                  <span class="text-xs font-semibold text-slate-600">
+                    <strong class="text-slate-900 text-sm font-extrabold">{{ stats.completedCount }}</strong> / {{ items.length }} mục
+                  </span>
+                </div>
+                <!-- Progress bar -->
+                <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden flex">
+                  <div 
+                    class="bg-emerald-500 h-full transition-all duration-500" 
+                    :style="{ width: (stats.completedCount / items.length * 100) + '%' }"
+                    title="Đã đạt"
+                  ></div>
+                  <div 
+                    class="bg-blue-400 h-full transition-all duration-500" 
+                    :style="{ width: (stats.inProgressCount / items.length * 100) + '%' }"
+                    title="Đang làm"
+                  ></div>
+                </div>
+                <!-- Mini status legends -->
+                <div class="flex items-center justify-between text-[11px] text-slate-500 mt-2 font-medium">
+                  <span class="flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                    Đã đạt: <b class="text-slate-800">{{ stats.completedCount }}</b>
+                  </span>
+                  <span class="flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-400 inline-block"></span>
+                    Đang làm: <b class="text-slate-800">{{ stats.inProgressCount }}</b>
+                  </span>
+                  <span class="flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-slate-300 inline-block"></span>
+                    Chưa làm: <b class="text-slate-800">{{ stats.pendingCount }}</b>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Cột 2: Phân tích 3 mức độ rủi ro -->
+              <div class="md:col-span-8 lg:col-span-7">
+                <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2.5 flex items-center justify-between">
+                  <span>Trạng Thái Theo Mức Rủi Ro</span>
+                  <span class="text-[11px] text-slate-400 font-normal">Nhấp badge để lọc nhanh</span>
+                </div>
+                <div class="grid grid-cols-3 gap-3">
+                  
+                  <!-- Card Rủi ro Cao -->
+                  <button 
+                    @click="setRiskFilter('Cao')"
+                    :class="filterRisk === 'Cao' ? 'ring-2 ring-red-500 bg-red-50/80' : 'bg-red-50/40 hover:bg-red-50 border border-red-100'"
+                    class="p-2.5 sm:p-3 rounded-xl text-left transition-all cursor-pointer group"
+                  >
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-red-700 flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
+                        Rủi ro Cao
+                      </span>
+                      <span class="text-xs font-extrabold text-red-700">
+                        {{ stats.highRiskCompleted }}/{{ stats.highRiskTotal }}
+                      </span>
+                    </div>
+                    <div class="w-full bg-red-200/60 h-1.5 rounded-full mt-2 overflow-hidden">
+                      <div class="bg-red-600 h-full rounded-full transition-all" :style="{ width: stats.highRiskTotal ? (stats.highRiskCompleted / stats.highRiskTotal * 100) + '%' : '0%' }"></div>
+                    </div>
+                    <p class="text-[10px] text-red-600/80 mt-1.5">
+                      Còn {{ stats.highRiskTotal - stats.highRiskCompleted }} mục cần xử lý
+                    </p>
+                  </button>
+
+                  <!-- Card Rủi ro Trung bình -->
+                  <button 
+                    @click="setRiskFilter('Trung bình')"
+                    :class="filterRisk === 'Trung bình' ? 'ring-2 ring-amber-500 bg-amber-50/80' : 'bg-amber-50/40 hover:bg-amber-50 border border-amber-100'"
+                    class="p-2.5 sm:p-3 rounded-xl text-left transition-all cursor-pointer group"
+                  >
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-amber-800 flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                        Trung Bình
+                      </span>
+                      <span class="text-xs font-extrabold text-amber-800">
+                        {{ stats.medRiskCompleted }}/{{ stats.medRiskTotal }}
+                      </span>
+                    </div>
+                    <div class="w-full bg-amber-200/60 h-1.5 rounded-full mt-2 overflow-hidden">
+                      <div class="bg-amber-500 h-full rounded-full transition-all" :style="{ width: stats.medRiskTotal ? (stats.medRiskCompleted / stats.medRiskTotal * 100) + '%' : '0%' }"></div>
+                    </div>
+                    <p class="text-[10px] text-amber-700/80 mt-1.5">
+                      Đạt {{ stats.medRiskTotal ? Math.round(stats.medRiskCompleted / stats.medRiskTotal * 100) : 0 }}%
+                    </p>
+                  </button>
+
+                  <!-- Card Rủi ro Thấp -->
+                  <button 
+                    @click="setRiskFilter('Thấp')"
+                    :class="filterRisk === 'Thấp' ? 'ring-2 ring-emerald-500 bg-emerald-50/80' : 'bg-emerald-50/40 hover:bg-emerald-50 border border-emerald-100'"
+                    class="p-2.5 sm:p-3 rounded-xl text-left transition-all cursor-pointer group"
+                  >
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-emerald-800 flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        Rủi ro Thấp
+                      </span>
+                      <span class="text-xs font-extrabold text-emerald-800">
+                        {{ stats.lowRiskCompleted }}/{{ stats.lowRiskTotal }}
+                      </span>
+                    </div>
+                    <div class="w-full bg-emerald-200/60 h-1.5 rounded-full mt-2 overflow-hidden">
+                      <div class="bg-emerald-500 h-full rounded-full transition-all" :style="{ width: stats.lowRiskTotal ? (stats.lowRiskCompleted / stats.lowRiskTotal * 100) + '%' : '0%' }"></div>
+                    </div>
+                    <p class="text-[10px] text-emerald-700/80 mt-1.5">
+                      Đạt {{ stats.lowRiskTotal ? Math.round(stats.lowRiskCompleted / stats.lowRiskTotal * 100) : 0 }}%
+                    </p>
+                  </button>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- 2. BỘ LỌC & TÌM KIẾM ĐA CHIỀU (FILTER BAR) -->
+          <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-xs space-y-3 no-print">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-center">
+              
+              <!-- Live Search Input -->
+              <div class="lg:col-span-4 relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+                <input 
+                  type="text" 
+                  v-model="searchQuery"
+                  placeholder="Tìm kiếm theo hạng mục, hậu quả, luật tra cứu..." 
+                  class="w-full pl-9 pr-8 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all placeholder:text-slate-400 text-slate-800"
+                />
+                <button 
+                  v-if="searchQuery" 
+                  @click="searchQuery = ''"
+                  class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-slate-600"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Filter: Nhóm nghiệp vụ (9 nhóm) -->
+              <div class="lg:col-span-3">
+                <select 
+                  v-model="filterGroup" 
+                  class="w-full py-2 px-3 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 text-slate-800 font-medium transition-all"
+                >
+                  <option value="">-- Tất cả 9 nhóm nghiệp vụ --</option>
+                  <option v-for="grp in groupList" :key="grp" :value="grp">{{ grp }}</option>
+                </select>
+              </div>
+
+              <!-- Filter: Mức độ rủi ro -->
+              <div class="sm:col-span-1 lg:col-span-2">
+                <select 
+                  v-model="filterRisk" 
+                  class="w-full py-2 px-3 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 text-slate-800 font-medium transition-all"
+                >
+                  <option value="">Rủi ro: Tất cả</option>
+                  <option value="Cao">🔴 Rủi ro Cao</option>
+                  <option value="Trung bình">🟡 Rủi ro Trung bình</option>
+                  <option value="Thấp">🟢 Rủi ro Thấp</option>
+                </select>
+              </div>
+
+              <!-- Filter: Người phụ trách -->
+              <div class="sm:col-span-1 lg:col-span-2">
+                <select 
+                  v-model="filterAssignee" 
+                  class="w-full py-2 px-3 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 text-slate-800 font-medium transition-all"
+                >
+                  <option value="">Người phụ trách: Tất cả</option>
+                  <option v-for="asn in assigneeList" :key="asn" :value="asn">{{ asn }}</option>
+                </select>
+              </div>
+
+              <!-- Filter: Trạng thái -->
+              <div class="sm:col-span-2 lg:col-span-1">
+                <select 
+                  v-model="filterStatus" 
+                  class="w-full py-2 px-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 text-slate-800 font-medium transition-all"
+                >
+                  <option value="">Trạng thái</option>
+                  <option value="Chưa làm">Chưa làm</option>
+                  <option value="Đang làm">Đang làm</option>
+                  <option value="Đạt">Đạt</option>
+                </select>
+              </div>
+
+            </div>
+
+            <!-- Filter Status Bar & Quick Actions -->
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100 text-xs">
+              <div class="flex items-center gap-2">
+                <span class="text-slate-500">
+                  Hiển thị <strong class="text-slate-900 font-bold">{{ filteredItems.length }}</strong> / {{ items.length }} mục
+                </span>
+                <span v-if="hasActiveFilter" class="text-brand-600 bg-brand-50 px-2 py-0.5 rounded-full font-medium text-[11px]">
+                  (Đang lọc)
+                </span>
+                <button 
+                  v-if="hasActiveFilter" 
+                  @click="resetFilters" 
+                  class="text-xs text-red-600 hover:text-red-800 font-medium underline ml-1 cursor-pointer"
+                >
+                  Xoá bộ lọc
+                </button>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <button 
+                  @click="expandAll" 
+                  class="px-2.5 py-1 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg font-medium transition-colors cursor-pointer flex items-center gap-1"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                  Mở rộng tất cả
+                </button>
+                <span class="text-slate-300">|</span>
+                <button 
+                  @click="collapseAll" 
+                  class="px-2.5 py-1 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg font-medium transition-colors cursor-pointer flex items-center gap-1"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                  </svg>
+                  Thu gọn tất cả
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. KHU VỰC HIỂN THỊ DANH SÁCH (CARD / ACCORDION VIEW) -->
+          <div v-if="filteredItems.length === 0" class="bg-white rounded-2xl p-12 text-center border border-slate-200 shadow-xs">
+            <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 mx-auto flex items-center justify-center mb-3">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 class="text-base font-bold text-slate-800">Không tìm thấy mục nào</h3>
+            <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+              Không có tiêu chí tuân thủ nào khớp với điều kiện tìm kiếm hoặc bộ lọc hiện tại.
+            </p>
+            <button @click="resetFilters" class="mt-4 px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-semibold hover:bg-slate-800 transition cursor-pointer">
+              Xoá bộ lọc và xem tất cả
+            </button>
+          </div>
+
+          <div v-else class="space-y-3">
+            <div 
+              v-for="item in filteredItems" 
+              :key="item.id" 
+              :id="'item-' + item.id"
+              class="bg-white rounded-2xl border transition-all duration-200 card-print overflow-hidden shadow-xs"
+              :class="[
+                expandedMap[item.id] ? 'border-slate-300 ring-1 ring-slate-200' : 'border-slate-200/90 hover:border-slate-300',
+                item.status === 'Đạt' ? 'bg-white' : item.status === 'Đang làm' ? 'bg-blue-50/20' : ''
+              ]"
+            >
+              <!-- HEADER ACCORDION -->
+              <div 
+                class="p-4 sm:p-5 flex items-start sm:items-center justify-between gap-3 cursor-pointer select-none"
+                @click="toggleExpand(item.id)"
+              >
+                <!-- Bên trái: Trạng thái Checkbox & Tiêu đề -->
+                <div class="flex items-start sm:items-center gap-3 flex-1 min-w-0">
+                  
+                  <!-- Trạng thái Toggle Button (Dừng lan truyền click) -->
+                  <button 
+                    @click.stop="cycleStatus(item)" 
+                    :title="'Trạng thái: ' + item.status + ' (Bấm để đổi)'"
+                    class="mt-0.5 sm:mt-0 flex-shrink-0 w-8 h-8 rounded-xl flex items-center justify-center transition-all cursor-pointer no-print"
+                    :class="{
+                      'bg-emerald-100 text-emerald-700 hover:bg-emerald-200 ring-2 ring-emerald-300': item.status === 'Đạt',
+                      'bg-blue-100 text-blue-700 hover:bg-blue-200 ring-2 ring-blue-300': item.status === 'Đang làm',
+                      'bg-slate-100 text-slate-400 hover:bg-slate-200 border border-slate-300': item.status === 'Chưa làm'
+                    }"
+                  >
+                    <!-- Icon Đạt -->
+                    <svg v-if="item.status === 'Đạt'" class="w-5 h-5 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <!-- Icon Đang làm -->
+                    <svg v-else-if="item.status === 'Đang làm'" class="w-4 h-4 animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    <!-- Icon Chưa làm -->
+                    <span v-else class="text-xs font-bold text-slate-400">○</span>
+                  </button>
+
+                  <!-- STT & Tiêu đề Hạng mục -->
+                  <div class="min-w-0 flex-1">
+                    <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1">
+                      <span class="text-[11px] font-mono font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
+                        #{{ item.id }}
+                      </span>
+                      <span class="text-xs font-medium text-slate-500">
+                        {{ item.group }}
+                      </span>
+                      <span class="text-slate-300">•</span>
+                      <!-- Badge Rủi ro -->
+                      <span 
+                        class="px-2 py-0.5 rounded-full text-[11px] font-bold border inline-flex items-center gap-1"
+                        :class="{
+                          'bg-red-50 text-red-700 border-red-200': item.risk === 'Cao',
+                          'bg-amber-50 text-amber-800 border-amber-200': item.risk === 'Trung bình',
+                          'bg-emerald-50 text-emerald-800 border-emerald-200': item.risk === 'Thấp',
+                        }"
+                      >
+                        <span class="w-1.5 h-1.5 rounded-full" :class="{
+                          'bg-red-600': item.risk === 'Cao',
+                          'bg-amber-500': item.risk === 'Trung bình',
+                          'bg-emerald-500': item.risk === 'Thấp'
+                        }"></span>
+                        {{ item.risk }}
+                      </span>
+                      <!-- Badge Người phụ trách -->
+                      <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-600 border border-slate-200 hidden sm:inline-block">
+                        👤 {{ item.assignee }}
+                      </span>
+                    </div>
+
+                    <h4 
+                      class="text-sm sm:text-base font-bold transition-colors leading-snug"
+                      :class="item.status === 'Đạt' ? 'text-slate-700' : 'text-slate-900'"
+                    >
+                      {{ item.title }}
+                    </h4>
+                  </div>
+
+                </div>
+
+                <!-- Bên phải: Trạng thái & Nút Mở rộng -->
+                <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+                  <span 
+                    class="px-2.5 py-1 rounded-lg text-xs font-bold whitespace-nowrap"
+                    :class="{
+                      'bg-emerald-100 text-emerald-800 border border-emerald-200': item.status === 'Đạt',
+                      'bg-blue-100 text-blue-800 border border-blue-200': item.status === 'Đang làm',
+                      'bg-slate-100 text-slate-600 border border-slate-200': item.status === 'Chưa làm'
+                    }"
+                  >
+                    {{ item.status }}
+                  </span>
+
+                  <div 
+                    class="w-7 h-7 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center transition-transform duration-200"
+                    :class="expandedMap[item.id] ? 'rotate-180 bg-slate-200 text-slate-800' : ''"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- BODY ACCORDION (KHI MỞ RỘNG HOẶC KHI IN) -->
+              <div 
+                v-show="expandedMap[item.id]" 
+                class="px-4 sm:px-6 pb-5 pt-2 border-t border-slate-100 bg-slate-50/50 space-y-4 text-xs sm:text-sm"
+              >
+                <!-- Grid 2 cột: Vì sao quan tâm & Hậu quả -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-2">
+                  
+                  <!-- Vì sao quan tâm -->
+                  <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs">
+                    <div class="flex items-center gap-1.5 font-bold text-slate-800 mb-1.5 text-xs uppercase tracking-wider text-blue-700">
+                      <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Vì sao cần quan tâm?
+                    </div>
+                    <p class="text-slate-600 leading-relaxed text-xs sm:text-sm">
+                      {{ item.whyCare }}
+                    </p>
+                  </div>
+
+                  <!-- Hậu quả nếu bỏ qua -->
+                  <div class="bg-red-50/40 p-3.5 rounded-xl border border-red-100 shadow-2xs">
+                    <div class="flex items-center gap-1.5 font-bold text-red-700 mb-1.5 text-xs uppercase tracking-wider">
+                      <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                      </svg>
+                      Hậu quả nếu bỏ qua / vi phạm:
+                    </div>
+                    <p class="text-red-800 leading-relaxed text-xs sm:text-sm">
+                      {{ item.consequences }}
+                    </p>
+                  </div>
+
+                </div>
+
+                <!-- Câu hỏi để tự kiểm tra -->
+                <div class="bg-amber-50/50 p-3.5 rounded-xl border border-amber-200/80">
+                  <div class="flex items-center gap-1.5 font-bold text-amber-900 mb-1 text-xs uppercase tracking-wider">
+                    <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Câu hỏi tự kiểm tra tại doanh nghiệp:
+                  </div>
+                  <p class="text-amber-950 font-medium leading-relaxed text-xs sm:text-sm">
+                    {{ item.questions }}
+                  </p>
+                </div>
+
+                <!-- Thông số tra cứu: Tần suất & Căn cứ pháp lý -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-white p-3 rounded-xl border border-slate-200">
+                  <div>
+                    <span class="font-bold text-slate-500 uppercase text-[10px] block">⏱️ Tần suất / Mốc thời hạn:</span>
+                    <span class="text-slate-800 font-medium">{{ item.frequency }}</span>
+                  </div>
+                  <div>
+                    <span class="font-bold text-slate-500 uppercase text-[10px] block">📜 Tra ở đâu (Văn bản pháp lý):</span>
+                    <span class="text-slate-800 font-medium">{{ item.reference }}</span>
+                  </div>
+                </div>
+
+                <!-- Khu vực điều khiển: Chuyển trạng thái & Ghi chú của người rà soát -->
+                <div class="bg-slate-100/70 p-3.5 rounded-xl border border-slate-200 space-y-2.5 no-print">
+                  <div class="flex flex-wrap items-center justify-between gap-2">
+                    <span class="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                      Cập nhật trạng thái rà soát:
+                    </span>
+                    <div class="inline-flex rounded-lg shadow-2xs bg-white p-1 border border-slate-200">
+                      <button 
+                        @click="setStatus(item, 'Chưa làm')" 
+                        :class="item.status === 'Chưa làm' ? 'bg-slate-800 text-white font-bold' : 'text-slate-600 hover:text-slate-900'"
+                        class="px-2.5 py-1 text-xs rounded-md transition cursor-pointer"
+                      >
+                        Chưa làm
+                      </button>
+                      <button 
+                        @click="setStatus(item, 'Đang làm')" 
+                        :class="item.status === 'Đang làm' ? 'bg-blue-600 text-white font-bold' : 'text-slate-600 hover:text-slate-900'"
+                        class="px-2.5 py-1 text-xs rounded-md transition cursor-pointer"
+                      >
+                        Đang làm
+                      </button>
+                      <button 
+                        @click="setStatus(item, 'Đạt')" 
+                        :class="item.status === 'Đạt' ? 'bg-emerald-600 text-white font-bold' : 'text-slate-600 hover:text-slate-900'"
+                        class="px-2.5 py-1 text-xs rounded-md transition cursor-pointer"
+                      >
+                        ✓ Đạt
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Ô nhập ghi chú riêng -->
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1 flex items-center justify-between">
+                      <span>Ghi chú của người rà soát (Tự động lưu vào trình duyệt):</span>
+                      <span v-if="savedItemNotification === item.id" class="text-emerald-600 font-bold text-[11px] animate-fade-in">
+                        ✓ Đã lưu!
+                      </span>
+                    </label>
+                    <textarea 
+                      v-model="item.note" 
+                      @input="onNoteChange(item)"
+                      rows="2"
+                      placeholder="Nhập tiến độ xử lý, người được giao việc, ngày dự kiến xong hoặc bằng chứng..." 
+                      class="w-full text-xs sm:text-sm px-3 py-2 bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 text-slate-800"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <!-- Print Note display -->
+                <div v-if="item.note" class="print-only border-t pt-2 mt-2">
+                  <p class="text-xs italic text-slate-700"><strong>Ghi chú rà soát:</strong> {{ item.note }}</p>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ==================================================== -->
+        <!-- TAB 2: 14 THAY ĐỔI PHÁP LÝ MỚI 2025 - 2026 -->
+        <!-- ==================================================== -->
+        <div v-show="activeTab === 'legalUpdates'" class="space-y-6">
+          
+          <div class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl p-6 text-white shadow-sm">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div>
+                <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-400 text-slate-900 mb-2 inline-block">
+                  Trọng tâm Tuân thủ Doanh nghiệp
+                </span>
+                <h2 class="text-xl sm:text-2xl font-black tracking-tight">
+                  14 Thay Đổi Pháp Lý Giai Đoạn 2025 - 2026
+                </h2>
+                <p class="text-slate-300 text-xs sm:text-sm mt-1 max-w-2xl">
+                  Bảng tổng hợp các văn bản luật mới ban hành và có hiệu lực, kèm đánh giá tác động trực tiếp đến danh mục 84 mục checklist doanh nghiệp.
+                </p>
+              </div>
+              <div class="text-right">
+                <span class="text-3xl font-extrabold text-amber-400">14</span>
+                <span class="text-xs text-slate-300 block">Văn bản mấu chốt</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Danh sách 14 điểm thay đổi -->
+          <div class="grid grid-cols-1 gap-4">
+            <div 
+              v-for="law in legalChanges" 
+              :key="law.id"
+              class="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs hover:border-slate-300 transition-all card-print"
+            >
+              <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2 border-b border-slate-100 pb-3">
+                <div>
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-slate-900 text-white">
+                      #{{ law.id }}
+                    </span>
+                    <span class="text-xs font-semibold px-2 py-0.5 rounded-full" :class="law.effectiveDate.includes('2026') ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'">
+                      Hiệu lực: {{ law.effectiveDate }}
+                    </span>
+                    <span class="text-xs font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                      {{ law.status }}
+                    </span>
+                  </div>
+                  <h3 class="text-base font-bold text-slate-900">
+                    {{ law.law }}
+                  </h3>
+                </div>
+              </div>
+
+              <!-- Tóm tắt thay đổi & Tác động -->
+              <div class="mt-3.5 space-y-3 text-xs sm:text-sm">
+                <div>
+                  <strong class="text-slate-800 block text-xs uppercase tracking-wider text-slate-500 mb-1">
+                    Nội dung thay đổi cốt lõi & Chế tài:
+                  </strong>
+                  <p class="text-slate-700 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
+                    {{ law.summary }}
+                  </p>
+                </div>
+
+                <div>
+                  <strong class="text-slate-800 block text-xs uppercase tracking-wider text-brand-700 mb-1">
+                    Hành động bắt buộc doanh nghiệp cần làm:
+                  </strong>
+                  <p class="text-slate-800 font-medium leading-relaxed bg-brand-50/50 p-3 rounded-xl border border-brand-100">
+                    {{ law.actionRequired }}
+                  </p>
+                </div>
+
+                <!-- Liên kết tới checklist tác động -->
+                <div class="pt-2 flex flex-wrap items-center gap-2">
+                  <span class="text-xs font-bold text-slate-500">Tác động đến các mục trong Checklist:</span>
+                  <button 
+                    v-for="itemId in law.impactItemIds" 
+                    :key="itemId"
+                    @click="navigateToItem(itemId)"
+                    title="Xem chi tiết mục này trên Checklist"
+                    class="px-2.5 py-1 text-xs font-bold rounded-lg bg-slate-100 hover:bg-slate-900 hover:text-white text-slate-800 border border-slate-200 transition-all cursor-pointer flex items-center gap-1"
+                  >
+                    <span>Mục #{{ itemId }}</span>
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ==================================================== -->
+        <!-- TAB 3: LỊCH TUÂN THỦ TRONG NĂM -->
+        <!-- ==================================================== -->
+        <div v-show="activeTab === 'calendar'" class="space-y-6">
+          
+          <div class="bg-gradient-to-r from-blue-900 to-indigo-900 rounded-2xl p-6 text-white shadow-sm">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div>
+                <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-blue-300 text-blue-950 mb-2 inline-block">
+                  Hạn Định & Deadline Pháp Lý
+                </span>
+                <h2 class="text-xl sm:text-2xl font-black tracking-tight">
+                  Lịch Các Mốc Tuân Thủ Định Kỳ Trong Năm
+                </h2>
+                <p class="text-blue-200 text-xs sm:text-sm mt-1 max-w-2xl">
+                  Theo dõi lịch trình nộp báo cáo thuế, tài chính, lao động, BHXH và an toàn lao động theo Tháng, Quý và Năm để tránh bị xử phạt chậm nộp.
+                </p>
+              </div>
+              <div class="text-right">
+                <span class="text-xs bg-white/20 px-3 py-1.5 rounded-xl font-bold">Chu kỳ 2025 - 2026</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lọc theo chu kỳ -->
+          <div class="flex items-center gap-2 overflow-x-auto pb-1 no-print">
+            <button 
+              @click="calendarFilter = ''" 
+              :class="calendarFilter === '' ? 'bg-slate-900 text-white font-bold' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'"
+              class="px-3.5 py-1.5 rounded-xl text-xs whitespace-nowrap transition cursor-pointer"
+            >
+              Tất cả các mốc
+            </button>
+            <button 
+              v-for="cal in complianceCalendar" 
+              :key="cal.period"
+              @click="calendarFilter = cal.period" 
+              :class="calendarFilter === cal.period ? 'bg-slate-900 text-white font-bold' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'"
+              class="px-3.5 py-1.5 rounded-xl text-xs whitespace-nowrap transition cursor-pointer"
+            >
+              {{ cal.period }}
+            </button>
+          </div>
+
+          <!-- Danh sách Timeline -->
+          <div class="space-y-6">
+            <div 
+              v-for="group in filteredCalendar" 
+              :key="group.period" 
+              class="space-y-3"
+            >
+              <div class="flex items-center gap-3">
+                <div class="w-3 h-3 rounded-full bg-blue-600"></div>
+                <h3 class="text-base font-bold text-slate-900 uppercase tracking-wide">
+                  {{ group.period }}
+                </h3>
+                <span class="h-px bg-slate-200 flex-1"></span>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                <div 
+                  v-for="(calItem, idx) in group.items" 
+                  :key="idx"
+                  class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs hover:border-blue-200 transition-all card-print"
+                >
+                  <div class="flex items-start justify-between gap-2 mb-2">
+                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 text-xs font-bold border border-blue-100">
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      {{ calItem.deadline }}
+                    </div>
+                    <span 
+                      class="px-2 py-0.5 rounded text-[11px] font-bold"
+                      :class="calItem.riskLevel === 'Cao' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-amber-50 text-amber-800 border border-amber-200'"
+                    >
+                      Rủi ro: {{ calItem.riskLevel }}
+                    </span>
+                  </div>
+
+                  <h4 class="text-sm sm:text-base font-bold text-slate-900 mb-1">
+                    {{ calItem.title }}
+                  </h4>
+
+                  <p class="text-xs text-slate-600 leading-relaxed mb-3">
+                    {{ calItem.description }}
+                  </p>
+
+                  <div class="flex items-center justify-between text-xs pt-2 border-t border-slate-100 text-slate-500 font-medium">
+                    <span>Phụ trách: <strong class="text-slate-800">{{ calItem.department }}</strong></span>
+                    <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-[10px] font-bold">{{ calItem.category }}</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500 no-print mt-12">
+        <div class="max-w-7xl mx-auto px-4">
+          <p class="font-semibold text-slate-700">
+            Compliance Checklist Dashboard © 2025 - 2026 | Công Cụ Tra Cứu & Quản Trị Tuân Thủ Doanh Nghiệp Toàn Diện
+          </p>
+          <p class="text-[11px] text-slate-400 mt-1">
+            Dữ liệu được lưu trữ trực tiếp trên trình duyệt của bạn (LocalStorage) • Sẵn sàng in báo cáo & xuất dữ liệu JSON
+          </p>
+        </div>
+      </footer>
+
+      <!-- TOAST NOTIFICATION -->
+      <div 
+        v-if="toastMessage" 
+        class="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-2.5 text-xs font-semibold transition-all animate-bounce"
+      >
+        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        <span>{{ toastMessage }}</span>
+      </div>
+
+    </div>
+
+    <!-- INJECTED_DATA_AND_APP_LOGIC -->
+  </body>
+</html>
